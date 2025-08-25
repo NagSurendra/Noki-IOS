@@ -11,7 +11,7 @@ class LoginPage {
     get homescreenAnimation() { return $('~homescreenanimation'); }
     get Done() { return $('~Done'); }
     get multitenantDropDown() { return $('~selectAccountId'); }
-    get multiTenantOption() { return $('~bheema-badri-ocsqv'); }
+    get multiTenantOption() { return $('~nagasurendra-badri-69g23'); }
     get multiTenantError() { return $('~Please select an Account ID')}
     
     // Helper methods for actions

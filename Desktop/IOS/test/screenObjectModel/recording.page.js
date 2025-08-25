@@ -81,14 +81,17 @@ class AudioManager {
     }
   
     async pauseAudio() {
-      if (this.currentProcess && !this.isPaused) {
-        this.playedTime += Date.now() / 1000 - this.startTime; // 🔹 accumulate playback
-        this.pausedTime = this.playedTime;
-        await execPromise("pkill -STOP afplay");
-        this.isPaused = true;
+        if (this.currentProcess && !this.isPaused) {
+          this.playedTime += Date.now() / 1000 - this.startTime; // 🔹 accumulate playback
+          this.pausedTime = this.playedTime;
+      
+          const { stdout } = await execPromise("pgrep afplay || true");
+          if (stdout.trim()) {
+            await execPromise("pkill -STOP afplay");
+            this.isPaused = true;
+          }
+        }
       }
-    }
-  
     async resumeAudio() {
       if (this.currentProcess && this.isPaused) {
         await execPromise("pkill -CONT afplay");
@@ -99,20 +102,22 @@ class AudioManager {
     }
   
     async stopAudio() {
-      if (this.currentProcess) {
-        await execPromise("killall afplay");
-        this.currentProcess = null;
+        if (this.currentProcess) {
+          const { stdout } = await execPromise("pgrep afplay || true");
+          if (stdout.trim()) {
+            await execPromise("killall afplay");
+          }
+          this.currentProcess = null;
+        }
+        this.isPaused = false;
+        this.pausedTime = 0;
+        this.startTime = 0;
+        this.playedTime = 0;
+        if (this._durationTicker) {
+          clearInterval(this._durationTicker);
+          this._durationTicker = null;
+        }
       }
-      this.isPaused = false;
-      this.pausedTime = 0;
-      this.startTime = 0;
-      this.playedTime = 0;
-      if (this._durationTicker) {
-        clearInterval(this._durationTicker);
-        this._durationTicker = null;
-      }
-    }
-  
     async AudioCommand() {
       return await this.playAudio();
     }
@@ -708,9 +713,9 @@ class RecordingPage {
  
     async Audio(){
         await driver.pause(4000);
-        await driver.navigateTo('https://www.youtube.com/watch?v=5t6Yr4eZ9wY');
+        await this.audioManager.playAudio();
         await driver.pause(120000);
-        await driver.activateApp("com.thinkhat.devNoki");
+        await this.audioManager.stopAudio();
     }
     async recordAudio() {
         
@@ -719,7 +724,6 @@ class RecordingPage {
         
     }
     async ctsConformation() {
-        try{
         if (await this.notEnoughTranscript.isDisplayed()) 
             {
                 console.error("Recording failed: Please provide a proper medical conversation")
@@ -729,12 +733,7 @@ class RecordingPage {
                 await waitForElement(this.SoapNoteBtn);
                 console.log("Recording successful: Transcript generated");
             }
-        } 
-        catch (error) 
-        {
-            console.error("Error in recordAudio:", error);
-            throw error; 
-        }
+  
         await verifyAndClick(this.Transcript);
         await verifyAndClick(this.Cdss);
         await driver.pause(2000);
@@ -896,9 +895,9 @@ class RecordingPage {
         console.log("Here app got restarted the app while it is in the recording screen and we verified with the app still in that page")
         await this.audioManager.resumeAudio();
         await driver.pause(100000)
+        await this.audioManager.pauseAudio();
         await verifyAndClick(this.stopBtn);
         console.log("here after app got closed while recording we magaing automatically again resumed the audio")
-        await this.audioManager.stopAudio();
         await driver.pause(5000);
         await verify(this.offlineConversationSaved)
         await aeroplaneModeOff()
@@ -942,7 +941,6 @@ class RecordingPage {
         while (true) {
           let newTextsAdded = 0;
       
-          // 1. collect all visible texts
           const textViews = await $$(textSelector);
           for (const textView of textViews) {
             const text = await textView.getText();
@@ -952,20 +950,18 @@ class RecordingPage {
             }
           }
       
-          // 2. check if any new texts were found
           if (newTextsAdded === 0) {
             console.log(`Stopping — no new texts found after swipe ${scrollCount}.`);
             break;
           }
       
-          // 3. swipe and wait, then repeat
           scrollCount++;
           console.log(`Swipe ${scrollCount}, new: ${newTextsAdded}, total: ${allTexts.size}`);
           await swipe("up", element);
           await driver.pause(pauseTime);
         }
       
-        return [...allTexts]; // return collected unique texts
+        return [...allTexts]; 
       }
       
       }

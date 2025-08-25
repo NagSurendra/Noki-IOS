@@ -13,11 +13,11 @@ export const config = {
     // Runner Configuration
     // ====================
     // WebdriverIO supports running e2e tests as well as unit and component tests.
-    // host:"localhost",
-    // port: 4723,
-    // path:"/wd/hub",
-    user: "nagsubbarayudu_E8hVDT",
-    key:"qYppkWwqYqWpGEbxwen6",
+    host:"localhost",
+    port: 4723,
+    path:"/wd/hub",
+    // user: "nagsubbarayudu_E8hVDT",
+    // key:"qYppkWwqYqWpGEbxwen6",
     //  
     // ==================
     // Specify Test Files
@@ -74,36 +74,36 @@ export const config = {
     capabilities: [
         // capabilities for local Appium web tests on an Android Emulator
         {
-            "platformName": "iOS",
+            "appium:platformName": "iOS",
            // "path": "/wd/hub",
-            "app": "",
+            //"app": "",
             //"deviceName": "iPhone 16",
             // "platformVersion": "16.7.8",
             //"deviceName": "iPhone 15 Pro Max",
-            "deviceName": "iPhone 16 Pro Max",
+            "appium:deviceName": "iPhone 16 Pro Max",
             //"deviceName": "iPad (5th generation)",
-             "platformVersion": "18.5",
+             "appium:platformVersion": "18.5",
             // "deviceName": "iPhone 12",\
-            //"automationName": "XCUITest",
+            "appium:automationName": "XCUITest",
             // "wdaLocalPort": 8100,
-            "noReset": true,
-            "fullReset": false,
-            "showXcodeLog": true,
-            "wdaLaunchTimeout": 180000,
-            "newCommandTimeout": 240000,
-            "connectionTimeout": 180000,
-            "sessionOverride": true,
-            "autoAcceptAlerts": true,
+            "appium:noReset": true,
+            "appium:fullReset": false,
+            "appium:showXcodeLog": true,
+            "appium:wdaLaunchTimeout": 180000,
+            "appium:newCommandTimeout": 240000,
+            "appium:connectionTimeout": 180000,
+            "appium:sessionOverride": true,
+            "appium:autoAcceptAlerts": true,
             //"forceAppLaunch":true,
             //"bundleId": "com.thinkhat.devNoki",
-             "udid": "00008140-00054922012B001C",//Iphone 16
+             "appium:udid": "00008140-00054922012B001C",//Iphone 16
             //"udid": "00008101-00041921212B001E",//Iphone 12
             //"udid": "00008130-0018755202F0001C",//Iphone 15 Pro Max
             //"udid": "BEAE10F4-8353-4B1C-B2D2-8E0C9D2F5DC1",//simulator
             //"udid": "00008110-000165DE22E9801E",//Iphone 13 Pro Max
 
            //"connectHardwareKeyboard": true,
-            "AcceptAlerts": true
+            "appium:AcceptAlerts": true
           }
     
     ],
@@ -156,15 +156,15 @@ export const config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ["browserstack"
-    //     [
-    //         'appium',
-    //         {
-    //             args: {
-    //                 relaxedSecurity: true
-    //             }
-    //         }
-    //     ],
+    services: [
+        [
+            'appium',
+            {
+                args: {
+                    relaxedSecurity: true
+                }
+            }
+        ],
     //     [
     //         'visual',
     //         {

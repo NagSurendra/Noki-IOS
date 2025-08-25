@@ -1,10 +1,12 @@
 export async function verify(element) {
     await element?.waitForDisplayed({ timeout: 10000 });
+    console.log(`Element is displayed${element} `);
 } 
   
 export async function verifyAndClick(element) { 
     await verify(element)
     await element?.click();
+    console.log(`Element is clicked ${element} `);
 }   
 
 export async function waitForElement(element, timeout = 120000) {
@@ -181,7 +183,7 @@ export async function AudioCommand(command) {
     }
     export async function aeroplaneModeOff(){
       await driver.pause(2000);
-      await verifyAndClick(RecordingPage.pauseBtn)
+      // await verifyAndClick(RecordingPage.pauseBtn)
       await RecordingPage.audioManager.pauseAudio()
       await driver.pause(3000);
       await driver.activateApp("com.apple.Preferences");

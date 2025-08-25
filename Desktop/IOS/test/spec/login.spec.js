@@ -8,6 +8,7 @@ describe('login screen test cases {TC01 - TC09}',() => {
     it('Verify accessibility of login screen elements {TC01}', async() => {
         await verify(LoginPage.emailField);
         await verify(LoginPage.passwordField);
+        await LoginPage.multitenantDropDown()
         await verify(LoginPage.loginButton);
         await LoginPage.restartApp();
     });
@@ -15,6 +16,7 @@ describe('login screen test cases {TC01 - TC09}',() => {
     it('Verify error message when password is not provided {TC03}', async() => {
         await LoginPage.enterEmail('nag.subbarayudu@thinkhat.ai')
         await LoginPage.Done.click()
+        await LoginPage.selectMultiTenant();
         await LoginPage.clickLogin();
         await verify(LoginPage.errorMessage);
         await LoginPage.restartApp();
@@ -23,6 +25,7 @@ describe('login screen test cases {TC01 - TC09}',() => {
     it('Verify error message when an incorrect password is entered {TC04}', async() => {
         await LoginPage.enterEmail('nag.subbarayudu@thinkhat.ai')
         await LoginPage.enterPassword('123456')
+        await LoginPage.selectMultiTenant();
         await LoginPage.clickLogin();
         await verify(LoginPage.WrongPassword);
         await LoginPage.restartApp();
@@ -57,40 +60,14 @@ describe('login screen test cases {TC01 - TC09}',() => {
         await verify(LoginPage.emailNotRegisteredError)
         await LoginPage.restartApp();
     });
-
-    it('Verify login performance within an acceptable time limit {TC09}', async() => {
+  
+    it('Verify  message when the email is multitenent{TC08}', async() => {
         await LoginPage.enterEmail('nag.subbarayudu@thinkhat.ai')
-        await LoginPage.enterPassword('Welcome@123')
+        await LoginPage.enterPassword('Abcd1234')
+        await LoginPage.selectMultiTenant();
         await LoginPage.clickLogin();
         await verify(HomePage.homeScreenAnimation)
-        await LoginPage.restartApp();
+        await verify(HomePage.homeScreenAnimation)
     });
-   
-    // it('Verify  message when the no password for multitenent{TC08}', async() => {
-    //     await LoginPage.enterEmail('bheema.Badri@thinkhat.ai')
-    //     await LoginPage.selectMultiTenant();
-    //     await LoginPage.enterPassword('')
-    //     await LoginPage.clickLogin();
-    //     await verify(LoginPage.errorMessage)
-    // });
-    // it('Verify  message for not selecting the dropdrown is multitenent{TC08}', async() => {
-    //     await LoginPage.enterEmail('bheema.Badri@thinkhat.ai')
-    //     await LoginPage.clickLogin();
-    //     await verify(LoginPage.multiTenantError);
-    // });
-    // it('Verify  message for incorrect Password is multitenent{TC08}', async() => {
-    //     await LoginPage.enterEmail('bheema.Badri@thinkhat.ai')
-    //     await LoginPage.selectMultiTenant();
-    //     await LoginPage.enterPassword('Abcd12343')
-    //     await LoginPage.clickLogin();
-    //     await verify(LoginPage.WrongPassword);
-    // });
-    // it('Verify  message when the email is multitenent{TC08}', async() => {
-    //     await LoginPage.enterEmail('bheema.Badri@thinkhat.ai')
-    //     await LoginPage.selectMultiTenant();
-    //     await LoginPage.enterPassword('Abcd1234')
-    //     await LoginPage.clickLogin();
-    // });
-
     
 })

@@ -31,7 +31,6 @@ import { verify } from '/Users/nagasubarayudu/Desktop/IOS/helpers/helper.js';
         await LoginPage.selectMultiTenant();
         await LoginPage.clickLogin();
         await LoginPage.restartApp()
-
     });
 
     
