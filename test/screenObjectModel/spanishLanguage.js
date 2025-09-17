@@ -1001,7 +1001,6 @@ class SpanishLanguage {
     await verify(this.cancel);
     await verifyAndClick(this.addAndProceed);
     // await RecordingPage.patientCreatedOk.click()
-    await this.startConversation();
     return name;
   }
   async addPatitentWrn() {
@@ -1078,11 +1077,12 @@ class SpanishLanguage {
     await driver.pause(60000);
     await aeroplaneModeOff();
     await driver.pause(60000);
-    await AudioManager.stopAudio();
+    const transcriptFile = await AudioManager.stopAudio();
     await this.pauseBtn.click();
     await this.stopBtn.click();
+    return transcriptFile
   }
-  async ctsConformation() {
+  async CDSS_Transcript_SOAPNote_Conformation() {
     if (await this.notEnoughTranscript.isDisplayed()) {
       console.error(
         "Recording failed: Please provide a proper medical conversation"
@@ -1098,7 +1098,7 @@ class SpanishLanguage {
     const elements =
       this.SuggestedDiagnosisAndInterventions ||
       this.SuggestedDiagnosticTesting ||
-      this.SuggestedMedications || //asdvwrfversdvcwreasvfdcweafSvdxc wrefasvdcxz
+      this.SuggestedMedications || 
       this.SuggestedQuestions;
 
     if (elements.isDisplayed()) {
@@ -1111,7 +1111,8 @@ class SpanishLanguage {
     }
     await driver.pause(3000);
     await verifyAndClick(this.Transcript);
-    await RecordingPage.dataScanning(RecordingPage.cleanedTranscriptScroll); // dsvceafsdc
+    await RecordingPage.dataScanning(RecordingPage.cleanedTranscriptScroll); 
+    // await AudioManager.TextComparison()
     await verifyAndClick(this.originalTrnscript);
     await verifyAndClick(this.claeanedTranscript);
     await this.SoapNoteBtn.click();
@@ -1120,12 +1121,13 @@ class SpanishLanguage {
   async recordAudioAndSaveAsDraft() {
     await AudioManager.playAudio("spanish");
     await driver.pause(180000);
-    await AudioManager.pauseAudio();
+    const transcriptFile =await AudioManager.stopAudio();
     await verifyAndClick(this.Back);
     await verifyAndClick(this.saveAsDraftBtn);
+    return transcriptFile
   }
   async recordAudioAndContinueForPrevEncounter() {
-    await this.recordAudio();
+    await this.recordAudioforOfflineMode();
     await waitForElement(this.PrevEncounterRef);
     await this.PrevEncounterRefNo.click();
   }
@@ -1135,7 +1137,7 @@ class SpanishLanguage {
     await verifyAndClick(this.PrevEncounterRefYes);
     await this.ctsConformation();
   }
-  async finalizeEncounter() {
+  async finalize_Encounter() {
     await waitForElement(this.SoapNoteBtn);
     await this.finaliseEncounter.click();
     await this.finaliseEncounterOk.click();
@@ -1143,7 +1145,8 @@ class SpanishLanguage {
     await driver.pause(5000);
   }
 
-  async multipleConversation() {
+  async multiple_Conversation() {
+    await waitForElement(this.AddConversation);
     await verifyAndClick(this.AddConversation);
     await verifyAndClick(this.AddConversationNo);
     await verifyAndClick(this.AddConversation);
@@ -1165,11 +1168,36 @@ class SpanishLanguage {
     );
     await this.recordAudio();
   }
-  async multipleConversationForExistingEnconter() {
-    await this.multipleConversation();
+  async third_Conversation_For_Existing_Patitent() {
+    await this.multiple_Conversation();
     await this.PrevEncounterRef.click();
     await this.PrevEncounterRefNo.click();
+    await this.CDSS_Transcript_SOAPNote_Conformation()
   }
+
+
+  async second_Conversations_For_Exicting_Patient() {
+   await waitForElement(this.AddConversation)
+    await verifyAndClick(this.AddConversation);
+    await verifyAndClick(this.AddConversationConfirmationYes);
+    await this.recordAudio();
+    await this.PrevEncounterRef.click();
+    await this.PrevEncounterRefNo.click();
+    await this.CDSS_Transcript_SOAPNote_Conformation()
+  
+  }
+
+  async second_Conversations_For_New_Patient() {
+   
+    await verifyAndClick(this.AddConversation);
+    await verifyAndClick(this.AddConversationConfirmationYes);
+    await this.recordAudio();
+    await this.CDSS_Transcript_SOAPNote_Conformation()
+  }
+
+
+
+  
   async recordAudioforOfflineMode() {
     await AudioManeger.playAudio("spanish");
     console.log("Audio started:", AudioManeger.currentAudioFile);
@@ -1182,15 +1210,13 @@ class SpanishLanguage {
     await this.playBtn.click();
     await AudioManeger.resumeAudio();
     console.log("Audio resumed:", AudioManeger.currentAudioFile);
-    await driver.pause(100000);
+    await driver.pause(60000);
     await AudioManeger.pauseAudio();
     await driver.pause(2000);
     await aeroplaneModeOn();
-    await driver.pause(2000);
-    await AudioManeger.resumeAudio();
     await driver.pause(5000);
-    await driver.terminateApp("com.thinkhat.nokiTest");
     await AudioManeger.pauseAudio();
+    await driver.terminateApp("com.thinkhat.nokiTest");
     await driver.pause(10000);
     await driver.activateApp("com.thinkhat.nokiTest");
     await driver.pause(10000);
@@ -1199,8 +1225,8 @@ class SpanishLanguage {
       "Here app got restarted the app while it is in the recording screen and we verified with the app still in that page"
     );
     await AudioManeger.resumeAudio();
-    await driver.pause(100000);
-    await AudioManeger.pauseAudio();
+    await driver.pause(60000);
+    await AudioManeger.stopAudio();
     await verifyAndClick(this.stopBtn);
     console.log(
       "here after app got closed while recording we magaing automatically again resumed the audio"
@@ -1235,7 +1261,7 @@ class SpanishLanguage {
       );
     } else {
       console.log(
-        "This Encounter we are recording for this particulat patient is for the First time"
+        "This conversation we are recording for this particulat patient is for the First time"
       );
     }
   }

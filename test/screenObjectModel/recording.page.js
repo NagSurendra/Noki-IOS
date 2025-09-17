@@ -9,148 +9,15 @@ import {
 import LoginPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/login.page.js";
 import EncounterPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/encounter.page.js";
 import HomePage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/home.page.js";
-import { faker } from "@faker-js/faker";
-import QuickActions from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/quickActions.page.js";
-import { exec, spawn } from "child_process";
+import { exec } from "child_process";
 
 import AudioManeger from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/audioManeger.js";
 import util from "util";
+import path from "path";
 import fs from "fs";
-// import path from "path";
+import QuickActions from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/quickActions.page.js";
 
 const execPromise = util.promisify(exec);
-
-// class AudioManager {
-//     constructor() {
-//         this.audioFiles = {
-//             english: "",
-//             spanish: "",
-//           };
-//       this.currentAudioFile = null;
-//       this.currentProcess = null;
-//       this.isPaused = false;
-//       this.pausedTime = 0; // Track paused time in seconds
-//       this.startTime = 0; // Track start time in seconds
-
-//       // 🔹 Added for audio duration limit
-//       this.playedTime = 0;
-//       this.maxDuration = 608; // 10:08 in seconds
-//       this._durationTicker = null;
-//     }
-
-//     _startDurationTicker() {
-//       if (this._durationTicker) return;
-//       this._durationTicker = setInterval(async () => {
-//         let elapsed = this.playedTime;
-//         if (!this.isPaused && this.startTime) {
-//           elapsed += Date.now() / 1000 - this.startTime;
-//         }
-//         if (elapsed >= this.maxDuration) {
-//           clearInterval(this._durationTicker);
-//           this._durationTicker = null;
-//           await this.stopAudio();
-//           console.log("Audio auto-stopped at 10:08 (608 sec)");
-//         }
-//       }, 1000);
-//     }
-
-//     async playAudio() {
-//       const audioFilePath =
-//         "/Users/nagasubarayudu/Desktop/NokiAndroid/utils/audioFiles/CardiacArrest.wav";
-
-//       if (this.isPaused && this.currentProcess) {
-//         this.currentProcess = spawn("afplay", [
-//           "-t",
-//           String(Number.MAX_SAFE_INTEGER),
-//           "-ss",
-//           String(this.pausedTime),
-//           audioFilePath,
-//         ]);
-//         this.currentProcess.on("error", (err) => {
-//           console.error("Failed to resume afplay:", err);
-//         });
-//         this.startTime = Date.now() / 1000;
-//         this.isPaused = false;
-//         this._startDurationTicker(); // 🔹 start ticker on resume
-//         return audioFilePath;
-//       } else {
-//         if (this.currentProcess) {
-//           await this.stopAudio();
-//         }
-//         this.currentAudioFile = audioFilePath;
-//         this.currentProcess = spawn("afplay", [audioFilePath]);
-//         this.currentProcess.on("error", (err) => {
-//           console.error("Failed to start afplay:", err);
-//         });
-//         this.startTime = Date.now() / 1000;
-//         this.isPaused = false;
-//         this._startDurationTicker(); // 🔹 start ticker on play
-//         return this.currentAudioFile;
-//       }
-//     }
-
-//     async pauseAudio() {
-//         if (this.currentProcess && !this.isPaused) {
-//           this.playedTime += Date.now() / 1000 - this.startTime; // 🔹 accumulate playback
-//           this.pausedTime = this.playedTime;
-
-//           const { stdout } = await execPromise("pgrep afplay || true");
-//           if (stdout.trim()) {
-//             await execPromise("pkill -STOP afplay");
-//             this.isPaused = true;
-//           }
-//         }
-//       }
-//     async resumeAudio() {
-//       if (this.currentProcess && this.isPaused) {
-//         await execPromise("pkill -CONT afplay");
-//         this.startTime = Date.now() / 1000;
-//         this.isPaused = false;
-//         this._startDurationTicker(); // 🔹 restart ticker
-//       }
-//     }
-
-//     async stopAudio() {
-//         if (this.currentProcess) {
-//           const { stdout } = await execPromise("pgrep afplay || true");
-//           if (stdout.trim()) {
-//             await execPromise("killall afplay");
-//           }
-//           this.currentProcess = null;
-//         }
-//         this.isPaused = false;
-//         this.pausedTime = 0;
-//         this.startTime = 0;
-//         this.playedTime = 0;
-//         if (this._durationTicker) {
-//           clearInterval(this._durationTicker);
-//           this._durationTicker = null;
-//         }
-//       }
-//     async AudioCommand() {
-//       return await this.playAudio();
-//     }
-//     async TextComparison(recordedText) {
-//         const TEXT_FILE_PATH =
-//           "/Users/nagasubarayudu/Desktop/NokiAndroid/utils/audiotranscripts/CardiacArrest.txt";
-
-//         const textFileContent = fs.readFileSync(TEXT_FILE_PATH, "utf8").trim();
-
-//         // Ensure recordedText is a string
-//         const normalizedRecordedText = String(recordedText || "").trim();
-
-//         const isMatch =
-//           textFileContent.toLowerCase() === normalizedRecordedText.toLowerCase();
-
-//         return {
-//           audioFile: this.currentAudioFile,
-//           textFile: TEXT_FILE_PATH,
-//           textFileContent,
-//           recordedText: normalizedRecordedText,
-//           isMatch,
-//         };
-//       }
-//     }
 
 class RecordingPage {
   get search() {
@@ -629,7 +496,7 @@ class RecordingPage {
     await this.Audio();
     await this.stopBtn.click();
   }
-  async ctsConformation() {
+  async CDSS_Transcript_SOAPNote_Conformation() {
     if (await this.notEnoughTranscript.isDisplayed()) {
       console.error(
         "Recording failed: Please provide a proper medical conversation"
@@ -638,7 +505,7 @@ class RecordingPage {
       await waitForElement(this.SoapNoteBtn);
       console.log("Recording successful: Transcript generated");
     }
-    await driver.pause(120000);
+    await waitForElement(QuickActions.quickActionButton)
     await verifyAndClick(this.Transcript);
     await verifyAndClick(this.Cdss);
     await driver.pause(2000);
@@ -659,6 +526,7 @@ class RecordingPage {
     await driver.pause(3000);
     await verifyAndClick(this.Transcript);
     await this.dataScanning(this.cleanedTranscriptScroll);
+    // await AudioManeger.TextComparison()
     await verifyAndClick(this.originalTrnscript);
     await driver.execute("mobile: swipe", { direction: "up" });
     await verifyAndClick(this.claeanedTranscript);
@@ -669,7 +537,8 @@ class RecordingPage {
     await driver.execute("mobile: swipe", { direction: "down" });
   }
 
-  async multipleConversation() {
+  async multiple_Conversation() {
+    await waitForElement(this.AddConversation)
     await verifyAndClick(this.AddConversation);
     await verifyAndClick(this.AddConversationNo);
     await verifyAndClick(this.AddConversation);
@@ -683,7 +552,7 @@ class RecordingPage {
     await LoginPage.restartApp();
     await verifyAndClick(HomePage.encounter);
     await driver.pause(5000);
-    await EncounterPage.clickDraftTranscript()
+    await EncounterPage.clickDraftTranscript();
     await driver.pause(5000);
     await waitForElement(this.finaliseEncounter);
     await verifyAndClick(this.finaliseEncounter);
@@ -701,18 +570,34 @@ class RecordingPage {
     );
     await this.recordAudio();
   }
-  async multipleConversationForExistingPatient() {
-    await this.multipleConversation();
+  async multiple_Conversations_For_Existing_Patient() {
+    await waitForElement(this.AddConversation)
+      await verifyAndClick(this.AddConversation);
+      await verifyAndClick(this.AddConversationConfirmationYes);
+      await this.recordAudioForExicistingPatient();
+      await this.CDSS_Transcript_SOAPNote_Conformation()
+  
+  }
+  async multiple_Conversations_For_New_Patient() {
+    await waitForElement(this.AddConversation)
+      await verifyAndClick(this.AddConversation);
+      await verifyAndClick(this.AddConversationConfirmationYes);
+      await this.recordAudio();
+  }
+  async multiple_Conversation_For_Existing_Patient() {
+
+    await this.multiple_Conversation();
     await this.PrevEncounterRef.click();
     await this.PrevEncounterRefNo.click();
   }
-  async finalizeEncounter() {
+
+  async finalize_Encounter() {
     await waitForElement(this.SoapNoteBtn);
     await verifyAndClick(this.SoapNoteScreenTxtField);
     await verifyAndClick(this.doneBtn);
     await this.finaliseEncounter.click();
     await this.finaliseEncounterOk.click();
-    await driver.pause(20000)
+    await driver.pause(20000);
   }
   async recordAudioAndSaveAsDraft() {
     await AudioManeger.playAudio("english");
@@ -758,6 +643,7 @@ class RecordingPage {
     await verifyAndClick(this.printPageCancel);
     await verifyAndClick(this.printPageBackBtn);
   }
+
   async recordAudioforOfflineMode() {
     await AudioManeger.playAudio("english");
     console.log("Audio started:", AudioManeger.currentAudioFile);
@@ -768,33 +654,34 @@ class RecordingPage {
     console.log("Audio paused at:", AudioManeger.pausedTime, "seconds");
     await driver.pause(20000);
     await this.playBtn.click();
-    await AudioManeger.resumeAudio();
+    await AudioManeger.resumeAudio();  //correct
     console.log("Audio resumed:", AudioManeger.currentAudioFile);
-    await driver.pause(100000);
-    await AudioManeger.pauseAudio();
+    await driver.pause(60000); //aagain playing audio for 1 min in online
+    await AudioManeger.pauseAudio(); 
     await driver.pause(2000);
+
     await aeroplaneModeOn();
-    await driver.pause(2000);
-    await AudioManeger.resumeAudio();
+
     await driver.pause(5000);
-    await driver.terminateApp("com.thinkhat.nokiTest");
     await AudioManeger.pauseAudio();
+    await driver.terminateApp("com.thinkhat.nokiTest"); // step verifying the app screen to be in recording screen only even in offline
     await driver.pause(10000);
     await driver.activateApp("com.thinkhat.nokiTest");
-    await driver.pause(10000);
+    await waitForElement(this.ContinueBtn);
     await verifyAndClick(this.ContinueBtn);
     console.log(
       "Here app got restarted the app while it is in the recording screen and we verified with the app still in that page"
     );
     await AudioManeger.resumeAudio();
-    await driver.pause(100000);
-    await AudioManeger.pauseAudio();
+    await driver.pause(60000);
+    await AudioManeger.stopAudio();
     await verifyAndClick(this.stopBtn);
     console.log(
       "here after app got closed while recording we magaing automatically again resumed the audio"
     );
     await driver.pause(5000);
     await verify(this.offlineConversationSaved);
+    
     await driver
       .action("pointer")
       .move({ duration: 0, x: 355, y: 22 })
@@ -811,21 +698,16 @@ class RecordingPage {
       .down({ button: 0 })
       .pause(50)
       .up({ button: 0 })
-      .perform();
+      .perform();         // device come to online
     await driver.pause(5000);
     console.log(
       "here we have verified that the in offline mode when we click stop button it willshould show a popup of offline conversation is saved"
     );
-    if (this.PrevEncounterRefNo.isDisplayed()) {
-      await this.PrevEncounterRefNo.click();
-      console.log(
-        "Here her are undrgoing conversation may be s followup or the patient is visted the doctor previously"
-      );
-    } else {
-      console.log(
-        "This Encounter we are recording for this particulat patient is for the First time"
-      );
-    }
+  }
+  async recordAudioforOfflineForExistingPatient(){
+   await this.recordAudioforOfflineMode()
+   await waitForElement(this.PrevEncounterRefNo)
+   await verifyAndClick(this.PrevEncounterRefNo)
   }
 
   async recordAudioforOfflineModeMT() {
@@ -882,7 +764,15 @@ class RecordingPage {
       await driver.pause(pauseTime);
     }
 
-    return [...allTexts];
+    const outputFile = path.resolve(
+      `/Users/nagasubarayudu/Desktop/IOS/_results_/scanned_texts_${Date.now()}.txt`
+    );
+
+    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+    fs.writeFileSync(outputFile, [...allTexts].join("\n"), "utf-8");
+    console.log(`✅ Texts saved to ${outputFile}`);
+
+    return outputFile;
   }
 }
 

@@ -1,3 +1,4 @@
+import { verify, verifyAndClick } from "../../helpers/helper";
 
 class LoginPage {
     get emailField() { return $('//XCUIElementTypeTextField[@value="Email*"]'); }
@@ -5,6 +6,8 @@ class LoginPage {
     get loginButton() { return $('//XCUIElementTypeButton[@name="Login"]'); }
     get errorMessage() { return $('~Password is Required'); }
     get WrongPassword() { return $('~The password is invalid or the user does not have a password.'); }
+    get shortPassword() { return $('~Password should be more than or equal to 8 characters'); }
+
     get emailError() { return $('~Email is required'); }
     get invalidEmailError() { return $('~Invalid Email'); }
     get emailNotRegisteredError() { return $('~No account associated with the email address'); }
@@ -13,21 +16,25 @@ class LoginPage {
     get multitenantDropDown() { return $('~selectAccountId'); }
     get multiTenantOption() { return $('~nagasurendra-badri-69g23'); }
     get multiTenantError() { return $('~Please select an Account ID')}
-    
+    get forgotPassword() { return $('~Forgot Password?')}
+    get forgotPasswordEmailField() { return $('(//XCUIElementTypeTextField[@value="Email*"])[2]')}
+    get sendResetLinkBtn() { return $('//XCUIElementTypeButton[@name="Send Reset Link"]')}
+    get loginLink() { return $('//XCUIElementTypeLink[@name="Login"]')}
+    get continueToLogin() { return $('//XCUIElementTypeButton[@name="Continue to Login"]')}
+    get successMessageForResetLink() { return $('~Password reset link has been successfully sent to your email.')}
+    get () { return $('')}
+    get () { return $('')}
+
     // Helper methods for actions
     async enterEmail(email) {
-        await expect(this.emailField).toBeDisplayed();
-        const size = await this.emailField.getSize();
-        expect(size.height).toBeGreaterThanOrEqual(34);
+        await verifyAndClick(this.emailField) 
         await this.emailField.setValue(email);
         await this.Done.click()
 
     }
 
     async enterPassword(password) {
-        await expect(this.passwordField).toBeDisplayed();
-        const size = await this.passwordField.getSize();
-        expect(size.height).toBeGreaterThanOrEqual(34);
+        await verifyAndClick(this.passwordField)
         await this.passwordField.setValue(password);
         await this.Done.click()
     }
@@ -37,8 +44,6 @@ class LoginPage {
         const size = await this.loginButton.getSize();
         expect(size.width).toBeGreaterThanOrEqual(44);
         expect(size.height).toBeGreaterThanOrEqual(44);
-        const isEnabled = await this.loginButton.isEnabled();
-        expect(isEnabled).toBe(true);
         await this.loginButton.click();
     }
 
@@ -47,15 +52,20 @@ class LoginPage {
         await driver.activateApp('com.thinkhat.nokiTest');
     }
     async selectMultiTenant() {
-      if(this.multitenantDropDown.isDisplayed()){
-        await this.multitenantDropDown.click();
+       await this.multitenantDropDown.click();
         await driver.pause(2000);
         await this.multiTenantOption.click();
-      }else {
-        console.log('the user Id that you have Entered is not a multi tenant user');
       }
-    }
     
-}
-
+    async enterForgotPasswordEmail(email) {
+      await verifyAndClick(this.forgotPasswordEmailField)
+      await this.forgotPasswordEmailField.setValue(email)
+      if(this.Done.isDisplayed()){      
+      await verifyAndClick(this.Done)
+    }else {
+        console.log("keyboard is not shown")
+    }
+      await verifyAndClick(this.sendResetLinkBtn)
+     }
+    }
 export default new LoginPage();

@@ -97,7 +97,6 @@ class AddPatientPage {
         await verify(this.cancel)
         await verifyAndClick(this.addAndProceed)
         // await RecordingPage.patientCreatedOk.click()
-        await RecordingPage.startConversation()
         return name
     }
     async addPatientWrn() 

@@ -2,24 +2,18 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import nodemailer from 'nodemailer';
+import archiver from "archiver";
+
 
 // === CONFIG ===
 const EMAIL_FROM = 'nag.subbarayudu@thinkhat.ai';
-const EMAIL_TO = ['thinkhatnag@gmail.com','sarat.tumu@thinkhat.ai','hepsiba.kambhampati@thinkhat.ai'];
+const EMAIL_TO = ['sarat.tumu@thinkhat.ai','bheema.badri@thinkhat.ai','hepsiba.kambhampati@thinkhat.ai','sagar.das@thinkhat.ai','sreedhar.mallu@thinkhat.ai','vasavi.battula@thinkhat.ai','rathan.dhondi@thinkhat.ai','anvesh.kumar@thinkhat.ai','mahabir.neogy@thinkhat.ai'];
 const EMAIL_PASS = 'uagw wpci glep bxpu';
 const BASE_DIR = '/Users/nagasubarayudu/Desktop/IOS';
 
-// === STEP 1: Generate Allure Report ===
-console.log("🔧 Generating Allure Report...");
-if (!fs.existsSync(path.join(BASE_DIR, "allure-results"))) {
-  console.error("❌ No allure-results folder found. Please run your tests first.");
-  process.exit(1);
-}
 
-// execSync(
-//   `allure generate ${path.join(BASE_DIR, "allure-results")} --clean -o ${path.join(BASE_DIR, "allure-report")}`,
-//   { stdio: "inherit" }
-// );
+
+
 
 // === STEP 2: Extract Test Summary ===
 const summaryPath = path.join(BASE_DIR, "allure-report", "widgets", "summary.json");
@@ -107,12 +101,26 @@ async function sendMail() {
     </ul>
     ${testCasesHtml}
   `;
+  const txtPath = path.join(BASE_DIR, "_results_", "scanned_texts.txt");
+  let attachments = [];
+
+  if (fs.existsSync(txtPath)) {
+    const zipPath = await zipFile(txtPath);
+    attachments.push({
+      filename: "scanned_texts.zip",
+      path: zipPath,
+    });
+  } else {
+    console.warn("⚠️ scanned_texts.txt not found, skipping attachment.");
+  }
 
   const mailOptions = {
     from: EMAIL_FROM,
     to: EMAIL_TO,
     subject: `🧪 Sanity Test Summary Report for NOKI IOS`,
     html: htmlBody,
+    attachments, // ✅ zip file gets added here
+
   };
 
   try {

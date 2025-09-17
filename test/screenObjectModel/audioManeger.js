@@ -2,6 +2,7 @@ import { spawn } from "child_process";
 import { exec } from "child_process";
 import util from "util";
 import fs from "fs";
+import {normalizeText, levenshtein } from "/Users/nagasubarayudu/Desktop/IOS/helpers/helper.js"
 // import path from "path";
 
 const execPromise = util.promisify(exec);
@@ -102,6 +103,47 @@ class AudioManager {
       }
       this.currentProcess = null;
     }
+  
+    // 🔹 Final played time update
+    if (!this.isPaused && this.startTime) {
+      this.playedTime += Date.now() / 1000 - this.startTime;
+    }
+  
+    // Load full transcript (linked to current audio)
+    const transcriptMap = {
+      english: "/Users/nagasubarayudu/Desktop/IOS/utils/audiotranscripts/CardiacArrest.txt",
+      spanish: "/Users/nagasubarayudu/Desktop/IOS/utils/audiotranscripts/CardiacArrestEs.txt",
+    };
+  
+    // Find which transcript to use
+    let language = "english";
+    for (const [lang, path] of Object.entries(this.audioFiles)) {
+      if (path === this.currentAudioFile) {
+        language = lang;
+      }
+    }
+  
+    const transcriptPath = transcriptMap[language];
+    const fullTranscript = fs.readFileSync(transcriptPath, "utf8").trim().split(/\s+/);
+  
+    // Approximate slice of transcript
+    const wordsPerSecond = fullTranscript.length / this.maxDuration;
+    const wordsToTake = Math.floor(this.playedTime * wordsPerSecond);
+  
+    const partialTranscript = fullTranscript.slice(0, wordsToTake).join(" ");
+  
+    // Save to .txt file
+    const logDir = "/Users/nagasubarayudu/Desktop/IOS/utils/audioLogs";
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+  
+    const logFile = `${logDir}/played_audio_${Date.now()}.txt`;
+    fs.writeFileSync(logFile, partialTranscript, "utf8");
+  
+    console.log("Transcript of played audio saved to:", logFile);
+  
+    // Reset state
     this.isPaused = false;
     this.pausedTime = 0;
     this.startTime = 0;
@@ -110,28 +152,39 @@ class AudioManager {
       clearInterval(this._durationTicker);
       this._durationTicker = null;
     }
+    return logFile;
   }
-  async AudioCommand(language = "english") {
-    return await this.playAudio(language);
-  }
-  async TextComparison(recordedText) {
-    const TEXT_FILE_PATH =
-      "/Users/nagasubarayudu/Desktop/NokiAndroid/utils/audiotranscripts/CardiacArrest.txt";
-
-    const textFileContent = fs.readFileSync(TEXT_FILE_PATH, "utf8").trim();
-
-    // Ensure recordedText is a string
-    const normalizedRecordedText = String(recordedText || "").trim();
-
-    const isMatch =
-      textFileContent.toLowerCase() === normalizedRecordedText.toLowerCase();
-
+  
+  
+  async  TextComparison() {
+    const transcriptDir = "/Users/nagasubarayudu/Desktop/IOS/utils/audioLogs";
+    const transcriptFiles = fs.readdirSync(transcriptDir)
+      .filter(f => f.startsWith("played_audio_") && f.endsWith(".txt"))
+      .sort((a,b) => b.localeCompare(a));
+    const latestTranscript = `${transcriptDir}/${transcriptFiles[0]}`;
+  
+    const scannedDir = "/Users/nagasubarayudu/Desktop/IOS/_results_";
+    const scannedFiles = fs.readdirSync(scannedDir)
+      .filter(f => f.startsWith("scanned_texts_") && f.endsWith(".txt"))
+      .sort((a,b) => b.localeCompare(a));
+    const latestScanned = `${scannedDir}/${scannedFiles[0]}`;
+  
+    const scannedText = normalizeText(fs.readFileSync(latestScanned, "utf8"));
+    const transcriptText = normalizeText(fs.readFileSync(latestTranscript, "utf8"));
+  
+    const distance = levenshtein(scannedText, transcriptText);
+    const maxLen = Math.max(scannedText.length, transcriptText.length) || 1;
+    const similarity = ((1 - distance / maxLen) * 100).toFixed(2);
+  
+    allure.step(`Text comparison result: ${similarity}%`, () => {
+      allure.attachment("Scanned Text", scannedText, "text/plain");
+      allure.attachment("Transcript Text", transcriptText, "text/plain");
+    });
+  
     return {
-      audioFile: this.currentAudioFile,
-      textFile: TEXT_FILE_PATH,
-      textFileContent,
-      recordedText: normalizedRecordedText,
-      isMatch,
+      scannedFile: latestScanned,
+      transcriptFile: latestTranscript,
+      similarity: `${similarity}%`,
     };
   }
 }
