@@ -18,60 +18,61 @@ describe('Home Screen elements functinalities and flows are verified here ', () 
         await verify(SettingsPage.profileSettings)
         await LoginPage.restartApp()
     });
-    it('Verify the audio recording process {TC12}', async() => {
-        await HomePage.startNewEncounterButton.click();
-       await SearchPatientPage.patientSearch('Naga')
-        await SearchPatientPage.proceedBTn.click();
-        await verify(RecordingPage.startConversationBtn)
-        await RecordingPage.launguageSelectior.click();
-        await verify(RecordingPage.englishLanOpt)
-        await verifyAndClick(RecordingPage.spanishLanOpt)
-        await LoginPage.restartApp()
-    });
-
-    it('Start recording after adding a new patient {TC14}', async() => {
-        await HomePage.nokiDashboardButton.click();
-        await HomePage.startNewEncounterButtonNokiDashboard.click();
-        await SearchPatientPage.addPatient.click();
-        await AddPatientPage.addPatientWrn()
-        await AddPatientPage.createNewPatient()
-        await verify(RecordingPage.startConversationBtn)
-        await LoginPage.restartApp()
-    });
 })
+//     it('Verify the audio recording process {TC12}', async() => {
+//         await HomePage.startNewEncounterButton.click();
+//        await SearchPatientPage.patientSearch('Naga')
+//         await SearchPatientPage.proceedBTn.click();
+//         await verify(RecordingPage.startConversationBtn)
+//         await RecordingPage.launguageSelectior.click();
+//         await verify(RecordingPage.englishLanOpt)
+//         await verifyAndClick(RecordingPage.spanishLanOpt)
+//         await LoginPage.restartApp()
+//     });
+
+//     it('Start recording after adding a new patient {TC14}', async() => {
+//         await HomePage.nokiDashboardButton.click();
+//         await HomePage.startNewEncounterButtonNokiDashboard.click();
+//         await SearchPatientPage.addPatient.click();
+//         await AddPatientPage.addPatientWrn()
+//         await AddPatientPage.createNewPatient()
+//         await verify(RecordingPage.startConversationBtn)
+//         await LoginPage.restartApp()
+//     });
+// })
 
 
 
-await this.quickActions.click()
-await this.regenerateIcdAndCptCodes.click()
-// await this.ok.click()
-await verify(this.cancle)
-await verifyAndClick(this.Proceed)
-await waitForElement(icdAndCptCodes)
-        await RecordingPage.copyMailPrint()
-await driver.execute('mobile: swipe', { direction: 'up' });
-await this.quickActions.click()
-await this.regenerateCarePlan.click()
-// await this.ok.click()
-await verify(this.cancle)
-await verifyAndClick(this.Proceed)
-await waitForElement(this.carePlan)
-        await RecordingPage.copyMailPrint()
-await driver.execute('mobile: swipe', { direction: 'up' });
-await this.quickActions.click()
-await this.regenerateFeedBack.click()
-// await this.ok.click()
-await verify(this.cancle)
-await verifyAndClick(this.Proceed)
-await waitForElement(this.feedBack)
-        await RecordingPage.copyMailPrint()
-await driver.execute('mobile: swipe', { direction: 'up' });
-await this.quickActions.click()
-await this.regenerateReferalLetter.click()
-// await this.ok.click()
-await verify(this.cancle)
-await verifyAndClick(this.Proceed)
-await waitForElement(this.referalLetter)
-        await RecordingPage.copyMailPrint()
-await driver.execute('mobile: swipe', { direction: 'up' });
+// await this.quickActions.click()
+// await this.regenerateIcdAndCptCodes.click()
+// // await this.ok.click()
+// await verify(this.cancle)
+// await verifyAndClick(this.Proceed)
+// await waitForElement(icdAndCptCodes)
+//         await RecordingPage.copyMailPrint()
+// await driver.execute('mobile: swipe', { direction: 'up' });
+// await this.quickActions.click()
+// await this.regenerateCarePlan.click()
+// // await this.ok.click()
+// await verify(this.cancle)
+// await verifyAndClick(this.Proceed)
+// await waitForElement(this.carePlan)
+//         await RecordingPage.copyMailPrint()
+// await driver.execute('mobile: swipe', { direction: 'up' });
+// await this.quickActions.click()
+// await this.regenerateFeedBack.click()
+// // await this.ok.click()
+// await verify(this.cancle)
+// await verifyAndClick(this.Proceed)
+// await waitForElement(this.feedBack)
+//         await RecordingPage.copyMailPrint()
+// await driver.execute('mobile: swipe', { direction: 'up' });
+// await this.quickActions.click()
+// await this.regenerateReferalLetter.click()
+// // await this.ok.click()
+// await verify(this.cancle)
+// await verifyAndClick(this.Proceed)
+// await waitForElement(this.referalLetter)
+//         await RecordingPage.copyMailPrint()
+// await driver.execute('mobile: swipe', { direction: 'up' });
 

@@ -51,7 +51,7 @@ class SettingsPage {
     return $("~Idioma");
   }
   get generalSettings() {
-    return $("~General Settings");
+    return $("~generalsettings");
   }
   get generalSettingsShowUp() {
     return $("~chevron.down");
@@ -117,10 +117,10 @@ class SettingsPage {
     return $("~home");
   }
   get save() {
-    return $("~Save");
+    return $("~Guardar");
   }
   get cancel() {
-    return $("~Cancel");
+    return $("~Cancelar");
   }
   get speciality() {
     return $("~speciality");
@@ -214,14 +214,13 @@ class SettingsPage {
     await verifyAndClick(this.firstName);
     await this.firstName.clearValue();
     await this.lastName.clearValue();
-
     await driver.execute("mobile: swipe", { direction: "up" });
     await verifyAndClick(this.number);
     await this.number.clearValue();
     await verifyAndClick(this.specialityDropDown);
     await verifyAndClick(this.specialityserchField);
-    await this.specialityserchField.setValue("other");
-    await $(`~Other`).click();
+    await this.specialityserchField.setValue("Otro");
+    await $(`~Otro`).click();
     await verifyAndClick(this.enterSpcificSpecialityTextField);
     await driver.execute("mobile: swipe", { direction: "down" });
     await verifyAndClick(this.firstNameTextField);
@@ -246,7 +245,7 @@ class SettingsPage {
     await driver.execute("mobile: swipe", { direction: "up" });
     await verifyAndClick(this.cancel);
     await driver.pause(4000);
-    // await verifyAndClick(this.ok);
+    await verifyAndClick(this.ok);
     await verifyAndClick(this.profileEditback);
     await verifyAndClick(this.profileSettings);
     await verifyAndClick(this.edit);
@@ -258,36 +257,8 @@ class SettingsPage {
     await verifyAndClick(this.profileEditback);
   }
 
-  // async profileSettingScreen() {
-  //     // Generate fake names
-  //     const fakeFirstName = faker.person.firstName(); // Generates a random first name
-  //     const fakeMiddleName = faker.person.middleName(); // Generates a random middle name
-  //     const fakeLastName = faker.person.lastName(); // Generates a random last name
-
-  //     // Perform the profile setting actions
-  //     await verifyAndClick(this.edit);
-  //     await verifyAndClick(this.firstName);
-  //     await this.firstName.clearValue();
-  //     await this.firstNameTextField.setValue(fakeFirstName); // Set fake first name
-  //     await verifyAndClick(this.middleName);
-  //     await this.middleNameTextField.setValue(fakeMiddleName); // Set fake middle name
-  //     await verify(this.lastName);
-  //     await this.lastName.clearValue();
-  //     await this.lastNameTextField.setValue(fakeLastName); // Set fake last name
-  //     await this.hideKeyBoard.click();
-  //     await driver.execute('mobile: swipe', { direction: 'up' });
-  //     await verifyAndClick(this.save);
-  //     await driver.pause(2000);
-  //     await verifyAndClick(this.profileEditback);
-  //     await verifyAndClick(this.edit);
-
-  //     // Verify the fake names
-  //     await verify(fakeFirstName);
-  //     await verify(fakeMiddleName);
-  //     await verify(fakeLastName);
-  //     await verifyAndClick(this.profileEditback)
-  // }
-  async SetthingsPageVerifiCation() {
+ 
+  async support_VerifiCation() {
    
     await verifyAndClick(this.help);
     await verifyAndClick(this.whatsapp);
@@ -344,9 +315,28 @@ class SettingsPage {
     // Pause for 5 seconds and switch back
     await driver.pause(5000);
     await driver.activateApp("com.thinkhat.nokiTest");
+  }
+  async launguageAndGeneralSettings(){
+    await verifyAndClick(this.launguage)
+    await verifyAndClick(this.english)
+    await verify(this.spanish)
+    await verifyAndClick(this.launguage)
+    await verifyAndClick(this.spanish)
 
-   
+    await verifyAndClick(this.generalSettings)
+    await verifyAndClick(this.selectAllOn)
+    await verifyAndClick(this.Done)
+    await verifyAndClick(this.generalSettings)
+    await verify(this.cdssDisabled)
+    await verify(this.diognosisJustificationDisabled)
+    await verifyAndClick(this.selectAllOff)
+    await verifyAndClick(this.Done)
+    await verifyAndClick(this.generalSettings)
+    await verify(this.selectAllOn)
+    await verify(this.cdss)
+    await verify(this.diognosisJustification)
+    await verifyAndClick(this.Done)
   }
 }
 
-export default new SettingsPage();
+export default new SettingsPage()

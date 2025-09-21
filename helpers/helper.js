@@ -5,6 +5,8 @@ import RecordingPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectMo
 import fs from "fs";
 import path from "path";
 import player from "play-sound";
+import say from "say";
+
 
 export async function verify(element) {
   await element?.waitForDisplayed({ timeout: 20000 });
@@ -257,3 +259,39 @@ export async function levenshtein(a, b) {
 
   return matrix[a.length][b.length];
 }
+
+
+import allureReporter from '@wdio/allure-reporter';
+
+
+export async function LiveTranscript() {
+  const transcript = await $("//XCUIElementTypeTextView");
+  const text = await transcript.getText();
+try{
+  if (text && text.trim().length > 0) {
+    allureReporter.addStep("✅ Live transcript is visible", { text: text.slice(0, 500) }, "passed");
+    return text;
+  } else {
+    allureReporter.addStep("⚠️ Live transcript not found", {}, "broken");
+    return null;
+  }
+}
+catch{
+  console.error('the live transcript is not visible')
+}
+}
+export async function playTTS(text, voice = null, speed = 1.0) {
+  return new Promise((resolve, reject) => {
+    say.speak(text, voice, speed, (err) => {
+      if (err) {
+        console.error("TTS failed:", err);
+        reject(err);
+      } else {
+        console.log("TTS spoken:", text);
+        resolve();
+      }
+    });
+  });
+}
+
+

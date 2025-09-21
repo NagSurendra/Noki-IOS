@@ -8,12 +8,15 @@ import {
 } from "/Users/nagasubarayudu/Desktop/IOS/helpers/helper.js";
 import AudioManager from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/audioManeger.js";
 import { faker } from "@faker-js/faker";
+
 import LoginPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/login.page.js";
 import RecordingPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/recording.page.js";
 import HomePage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/home.page.js";
 import EncounterPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/encounter.page.js";
 import AudioManeger from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/audioManeger.js";
 class SpanishLanguage {
+  get Done() { return $('~Done'); }
+
   get newUserREsgistrationText() {
     return $(
       "~¿Nuevo usuario? Por favor, visita el sitio web de Noki para crear una nueva cuenta."
@@ -48,35 +51,380 @@ class SpanishLanguage {
   get homescreenAnimation() {
     return $("~homescreenanimation");
   }
+  get multitenantDropDown() { return $('~chevron.down'); }
+  get multiTenantOption() { return $('~nagasurendra-badri-69g23'); }
+  get multiTenantError() { return $('~contraseña incorrecta')}
+  get forgotPassword() { return $('~¿Olvidaste tu contraseña?')}
+  get forgotPasswordEmailField() { return $('//XCUIElementTypeTextField[@value="Correo electrónico*"]')}
+  get sendResetLinkBtn() { return $('//XCUIElementTypeButton[@name="Enviar enlace de restablecimiento"]')}
+  get loginLink() { return $('//XCUIElementTypeLink[@name="Iniciar sesión"]')}
+  get continueToLogin() { return $('//XCUIElementTypeButton[@name="Continuar al inicio de sesión"]')}
+  get successMessageForResetLink() { return $('~El enlace para restablecer la contraseña se ha enviado correctamente a tu correo electrónico.')}
 
   // Helper methods for actions
   async enterEmail(email) {
-    await expect(this.emailField).toBeDisplayed();
-    const size = await this.emailField.getSize();
-    expect(size.height).toBeGreaterThanOrEqual(34);
+    await verifyAndClick(this.emailField) 
     await this.emailField.setValue(email);
-  }
+    await this.Done.click()
 
-  async enterPassword(password) {
-    await expect(this.passwordField).toBeDisplayed();
-    const size = await this.passwordField.getSize();
-    expect(size.height).toBeGreaterThanOrEqual(34);
+}
+
+async enterPassword(password) {
+    await verifyAndClick(this.passwordField)
     await this.passwordField.setValue(password);
-  }
+    await this.Done.click()
+}
 
-  async clickLogin() {
+async clickLogin() {
     await expect(this.loginButton).toBeDisplayed();
     const size = await this.loginButton.getSize();
     expect(size.width).toBeGreaterThanOrEqual(44);
     expect(size.height).toBeGreaterThanOrEqual(44);
-    const isEnabled = await this.loginButton.isEnabled();
-    expect(isEnabled).toBe(true);
     await this.loginButton.click();
+}
+async selectMultiTenant() {
+   await this.multitenantDropDown.click();
+    await driver.pause(2000);
+    await this.multiTenantOption.click();
   }
-  async clearTextFields() {
-    await this.emailField.clearValue();
-    await this.passwordField.clearValue();
+
+async enterForgotPasswordEmail(email) {
+  await verifyAndClick(this.forgotPasswordEmailField)
+  await this.forgotPasswordEmailField.setValue(email)
+  if(this.Done.isDisplayed()){      
+  await verifyAndClick(this.Done)
+}else {
+    console.log("keyboard is not shown")
+}
+  await verifyAndClick(this.sendResetLinkBtn)
+ }
+
+
+
+
+
+get profileSettings() {
+  return $("~profilesettings");
+}
+get help() {
+  return $("~support");
+}
+get whatsapp() {
+  return $("~whatsapp");
+}
+get text() {
+  return $("~text");
+}
+get whatsappText() {
+  return $("~text");
+}
+get messagetext() {
+  return $("~text");
+}
+
+get email() {
+  return $("~email");
+}
+get() {
+  return $(``);
+}
+get() {
+  return $(``);
+}
+get launguage() {
+  return $("~language");
+}
+get Idioma() {
+  return $("~Idioma");
+}
+get generalSettings() {
+  return $("~General Settings");
+}
+get generalSettingsShowUp() {
+  return $("~chevron.down");
+}
+get generalSettingsClose() {
+  return $("~chevron.up");
+}
+get logoutBtn() {
+  return $("~logout");
+}
+get name() {
+  return $("~nagasurendra Badri");
+}
+get back() {
+  return $("~backArrow");
+}
+get profileEditback() {
+  return $("~arrow.backward");
+}
+get ConsultWithUS() {
+  return $("~Consult with us!");
+}
+get WriteUsNow() {
+  return $("~Write to us now!");
+}
+get english() {
+  return $("~Inglés");
+}
+get Inglish() {
+  return $('(//XCUIElementTypeStaticText[@name="LanguageSettingTVC"])[1]');
+}
+get spanish() {
+  return $("~Spanish");
+}
+get edit() {
+  return $("~Editar");
+}
+get firstName() {
+  return $('//XCUIElementTypeTextField[@value="Naga"]');
+}
+get firstNameTextField() {
+  return $(
+    "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeTextField[1]"
+  );
+}
+get middleName() {
+  return $('//XCUIElementTypeTextField[@value="Naga"]');
+}
+get middleNameTextField() {
+  return $(
+    "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeTextField[2]"
+  );
+}
+get lastName() {
+  return $('//XCUIElementTypeTextField[@value="Subbarayudu"]');
+}
+get lastNameTextField() {
+  return $(
+    "//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeTextField[3]"
+  );
+}
+get home() {
+  return $("~home");
+}
+get save() {
+  return $("~Guardar");
+}
+get cancel() {
+  return $("~Cancelar");
+}
+get speciality() {
+  return $("~speciality");
+}
+get loginMail() {
+  return $("~nag.subbarayudu@thinkhat.ai");
+}
+
+get selectAllOn() {
+  return $("~selectallbuttonoff");
+}
+
+get selectAllOff() {
+  return $("~selectallbuttonon");
+}
+get cdss() {
+  return $("~cdsson");
+}
+get cdssDisabled() {
+  return $("~cdssoff");
+}
+get diognosisJustificationDisabled() {
+  return $("~diagnosisjustificationoff");
+}
+
+get diognosisJustification() {
+  return $("~diagnosisjustificationon");
+}
+get logoutcancelationBtn() {
+  return $("~no");
+}
+get logoutBtn() {
+  return $("~logout");
+}
+get logoutConformationBtn() {
+  return $("~yes");
+}
+get logingoutText() {
+  return $("~Are you sure you want to logout?");
+}
+get sync() {
+  return $("~syncing");
+}
+get Done() {
+  return $("~done");
+}
+
+get ok() {
+  return $("~OK");
+}
+get hideKeyBoard() {
+  return $("~Return");
+}
+
+get firstnameError() {
+  return $(`~El nombre es obligatorio.`);
+}
+get lastNameError() {
+  return $(`~El apellido es obligatorio.`);
+}
+get phoneNumberError() {
+  return $(`~Se requiere teléfono.`);
+}
+get specialityserchField() {
+  return $(`//XCUIElementTypeTextField[@value="Search Speciality"]`);
+}
+get enterSpcificSpecialityTextField() {
+  return $(
+    `//XCUIElementTypeScrollView/XCUIElementTypeOther[1]/XCUIElementTypeTextField[4]`
+  );
+}
+get specialityDropDown() {
+  return $(`~arrowtriangle.down.fill`);
+}
+get specificSpecialityError() {
+  return $(`~Se requiere teléfono.`);
+}
+get phoneNumberTextfield() {
+  return $(`//XCUIElementTypeTextField[@value="Número de teléfono"]`);
+}
+
+get keyboardClose() {
+  return $(`~Return`);
+}
+get number() {
+  return $(`//XCUIElementTypeTextField[@value="(999) 999-9999"]`);
+}
+
+ async profileSettingScreen() {
+  await verifyAndClick(this.edit);
+  await verifyAndClick(this.firstName);
+  await this.firstName.clearValue();
+  await this.lastName.clearValue();
+  await driver.execute("mobile: swipe", { direction: "up" });
+  await verifyAndClick(this.number);
+  await this.number.clearValue();
+  await verifyAndClick(this.specialityDropDown);
+  await verifyAndClick(this.specialityserchField);
+  await this.specialityserchField.setValue("other");
+  await $(`~Other`).click();
+  await verifyAndClick(this.enterSpcificSpecialityTextField);
+  await driver.execute("mobile: swipe", { direction: "down" });
+  await verifyAndClick(this.firstNameTextField);
+  await verifyAndClick(this.keyboardClose);
+  await verifyAndClick(this.save);
+  await driver.pause(3000);
+  await verify(this.firstnameError);
+  await verify(this.lastNameError);
+  await verify(this.specificSpecialityError);
+  await driver.execute("mobile: swipe", { direction: "up" });
+  await verify(this.phoneNumberError);
+  await verifyAndClick(this.cancel);
+  await verifyAndClick(this.edit);
+  const FirstName = await this.firstNameTextField.setValue("Naga");
+  await verifyAndClick(this.middleName);
+  const MiddleName = await this.middleNameTextField.setValue("Surendra");
+  const LastName = await this.lastNameTextField.setValue("Subbarayudu");
+  const PhoneNumber = await this.number.setValue("9999999999");
+  await driver.execute("mobile: swipe", { direction: "down" });
+  await verifyAndClick(this.firstNameTextField);
+  await verifyAndClick(this.keyboardClose);
+  await driver.execute("mobile: swipe", { direction: "up" });
+  await verifyAndClick(this.cancel);
+  await driver.pause(4000);
+  await verifyAndClick(this.ok);
+  await verifyAndClick(this.profileEditback);
+  await verifyAndClick(this.profileSettings);
+  await verifyAndClick(this.edit);
+  await verify(this.firstName);
+  await verify(this.middleName);
+  await verify(this.lastName);
+  await verify(this.number);
+  await verifyAndClick(this.cancel);
+  await verifyAndClick(this.profileEditback);
+}
+
+
+async support_VerifiCation() {
+ 
+  await verifyAndClick(this.help);
+  await verifyAndClick(this.whatsapp);
+
+  const whatsappBundleId = "net.whatsapp.WhatsApp"; // WhatsApp's bundle ID for iOS
+
+  // Check if WhatsApp is in the foreground (state 4 indicates the app is active)
+  const appState = await driver.execute("mobile: queryAppState", {
+    bundleId: whatsappBundleId,
+  });
+  if (appState !== 4) {
+    throw new Error(
+      `WhatsApp (${whatsappBundleId}) is not active. Current app state: ${appState}`
+    );
   }
+
+  console.log("WhatsApp is active");
+
+  // Pause for 5 seconds
+  await driver.pause(5000);
+  // Switch back to the original app
+  await driver.activateApp("com.thinkhat.nokiTest");
+  await HomePage.settings.click();
+  await verifyAndClick(this.help);
+  await verifyAndClick(this.email);
+  // Verify Gmail is active
+  const gmailBundleId = "com.google.Gmail";
+  const gmailAppState = await driver.execute("mobile: queryAppState", {
+    bundleId: gmailBundleId,
+  });
+  if (gmailAppState !== 4) {
+    throw new Error(
+      `Gmail (${gmailBundleId}) is not active. Current app state: ${gmailAppState}`
+    );
+  }
+  console.log("Gmail is active");
+  await driver.pause(5000);
+  await driver.activateApp("com.thinkhat.nokiTest");
+  // Open Settings and Help, then click text element to launch Messages
+  await HomePage.settings.click();
+  await verifyAndClick(this.help);
+  await verifyAndClick(this.text);
+  // Verify Messages is active
+  const messagesBundleId = "com.apple.MobileSMS";
+  const messagesAppState = await driver.execute("mobile: queryAppState", {
+    bundleId: messagesBundleId,
+  });
+  if (messagesAppState !== 4) {
+    throw new Error(
+      `Messages (${messagesBundleId}) is not active. Current app state: ${messagesAppState}`
+    );
+  }
+  console.log("Messages is active");
+  // Pause for 5 seconds and switch back
+  await driver.pause(5000);
+  await driver.activateApp("com.thinkhat.nokiTest");
+}
+async launguageAndGeneralSettings(){
+  await verifyAndClick(this.launguage)
+  await verifyAndClick(this.spanish)
+  await verify(this.english)
+  await verifyAndClick(this.launguage)
+  await verifyAndClick(this.english)
+  await verifyAndClick(this.generalSetting)
+  await verifyAndClick(this.selectAllOn)
+  await verifyAndClick(this.Done)
+  await verifyAndClick(this.generalSetting)
+  await verify(this.cdssDisabled)
+  await verify(this.diagnosisJustification)
+  await verifyAndClick(this.selectAllOff)
+  await verifyAndClick(this.Done)
+  await verifyAndClick(this.generalSetting)
+  await verify(this.selectAllOn)
+  await verify(this.cdss)
+  await verify(this.diognosisJustification)
+  await verifyAndClick(this.Done)
+}
+
+
   get homeScreenAnimation() {
     return $('//XCUIElementTypeImage[@name="homescreenanimation"]');
   }
@@ -681,12 +1029,7 @@ class SpanishLanguage {
   // {
   //     return $('~french');
   // }
-  get spanish() {
-    return $("");
-  }
-  get english() {
-    return $("~Inglés");
-  }
+
 
   get generateIcdAndCptCodes() {
     return $("~Generar códigos ICD y CPT");
@@ -847,132 +1190,117 @@ class SpanishLanguage {
     await waitForElement(this.copyBtn);
     await verifyAndClick(this.copyBtn);
     await verifyAndClick(this.mailBtn);
-    // await verifyAndClick(this.emailSentOk);
+    await verifyAndClick(this.emailSentOk);
     await verifyAndClick(this.printBtn);
     await verify(this.printDownload);
     await driver.pause(10000);
     await verifyAndClick(RecordingPage.printPageCancel);
     await verifyAndClick(this.printPageBackBtn);
   }
-  async quickAction() {
-    await waitForElement(this.SoapNoteBtn);
+  async SOAP_NOTE() {
+    await waitForElement(this.quickActionButton);
     await this.quickActionButton.click();
     await verify(this.quicktionsSearchField);
     await verifyAndClick(this.regenerateSoapNote);
     await verifyAndClick(this.yes);
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
     await waitForElement(this.SoapNoteBtn);
     await this.copyMailPrint();
-    await this.update.click();
-    await this.PatientInformation.click();
-    await verify(this.title);
-    await verify(this.Discription);
-    await verifyAndClick(this.add);
-    await verifyAndClick(RecordingPage.clearPatientInfo);
-    await verifyAndClick(this.save);
-    await verifyAndClick(this.update);
-    await verifyAndClick(this.cancel);
+    await this.UpdatePatientInfo()
+  }
 
-    // await this.quickActions.click()
-    // await verifyAndClick(this.translateSoapNote)
-    // await verify(this.french)
-    // await verify(this.cancel)
-    // await verifyAndClick(this.Proceed)
-    // await waitForElement(this.PatientInformationInSpnish)
-    // await Recording.copyMailPrint()
-    // await driver.execute('mobile: swipe', { direction: 'up' });
-
+async translate_SoapNote(){
+  await waitForElement(this.quickActionButton);
     await this.quickActionButton.click();
     await this.translateSoapNote.click();
     await this.english.click();
     await verifyAndClick(this.yes);
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
     await waitForElement(this.PatientInformationTxtInEnlish);
     await this.copyMailPrint();
-    await this.update.click();
-    await this.PatientInformation.click();
-    //await verify(RecordingPage.titleInSpanish)
-    //await verify(RecordingPage.discriptionInSpanish)
-    await verifyAndClick(this.add);
-    // await verifyAndClick(RecordingPage.ok)
-    await verifyAndClick(RecordingPage.clearPatientInfo);
-    await verifyAndClick(this.save);
-    await verifyAndClick(this.update);
-    await verifyAndClick(this.cancel);
     await this.quickActionButton.click();
     await this.translateSoapNote.click();
     await verifyAndClick(this.spanish);
     await verifyAndClick(this.yes);
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
     await waitForElement(this.PatientInformationTxtOnSpanish);
     await driver.pause(4000);
+}
+async ICD_CPT(){
+  await waitForElement(this.quickActionButton);
+
     await verifyAndClick(this.quickActionButton);
     await verifyAndClick(this.generateIcdAndCptCodes);
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
     await waitForElement(this.icdAndCptCodes);
-    await this.copyMailPrint();
-    await this.update.click();
-    await this.save.click();
-    await this.quickActionButton.click();
-    await this.generateCarePlan.click();
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
-    await waitForElement(this.carePlan);
-    await this.copyMailPrint();
-    await this.quickActionButton.click();
-    await this.generateFeedBack.click();
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
-    await waitForElement(this.feedBack);
-    await this.copyMailPrint();
-    await this.quickActionButton.click();
-    await this.generateReferalLetter.click();
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
-    await waitForElement(this.referalLetter);
     await this.copyMailPrint();
     await verifyAndClick(this.quickActionButton);
     await verifyAndClick(this.regenerateIcdAndCpt);
     await verifyAndClick(this.yes);
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
     await waitForElement(this.icdAndCptCodes);
+    await this.copyMailPrint();
+}
+async care_Plan(){
+  await waitForElement(this.quickActionButton);
+
+    await this.quickActionButton.click();
+    await this.generateCarePlan.click();
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
+    await waitForElement(this.carePlan);
     await this.copyMailPrint();
     await verifyAndClick(this.quickActionButton);
     await verifyAndClick(this.regenerateCarePlan);
     await verifyAndClick(this.yes);
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
     await waitForElement(this.carePlan);
+    await this.copyMailPrint();
+}
+async feed_Back(){
+  await waitForElement(this.quickActionButton);
+
+    await this.quickActionButton.click();
+    await this.generateFeedBack.click();
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
+    await waitForElement(this.feedBack);
     await this.copyMailPrint();
     await verifyAndClick(this.quickActionButton);
     await verifyAndClick(this.regenerateFeedBack);
     await verifyAndClick(this.yes);
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
     await waitForElement(this.feedBack);
+    await this.copyMailPrint();
+}
+async referal_Letter(){
+  await waitForElement(this.quickActionButton);
+
+    await this.quickActionButton.click();
+    await this.generateReferalLetter.click();
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
+    await waitForElement(this.referalLetter);
     await this.copyMailPrint();
     await this.quickActionButton.click();
     await verifyAndClick(this.regenerateReferalLetter);
     await verifyAndClick(this.yes);
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
+    await waitForElement(this.ok)
+    await verifyAndClick(this.ok)
     await waitForElement(this.referalLetter);
     await verifyAndClick(this.copyBtn);
     await verifyAndClick(this.mailBtn);
-    // await verifyAndClick(RecordingPage.emailSentOk)
+    await verifyAndClick(RecordingPage.emailSentOk)
     await verifyAndClick(this.printBtn);
     await verifyAndClick(this.printPageCancel);
     await verifyAndClick(this.printPageBackBtn);
-    await this.quickActionButton.click();
-    await verifyAndClick(this.regenerateSoapNote);
-    await verifyAndClick(this.yes);
-    // await waitForElement(this.ok)
-    // await verifyAndClick(this.ok)
   }
 
   //AddPatitent Screen Functions
@@ -1000,7 +1328,7 @@ class SpanishLanguage {
     await this.male.click();
     await verify(this.cancel);
     await verifyAndClick(this.addAndProceed);
-    // await RecordingPage.patientCreatedOk.click()
+    await RecordingPage.patientCreatedOk.click()
     return name;
   }
   async addPatitentWrn() {
@@ -1076,13 +1404,14 @@ class SpanishLanguage {
     await verify(this.offlineModeRTranscription);
     await driver.pause(60000);
     await aeroplaneModeOff();
+    await 
     await driver.pause(60000);
     const transcriptFile = await AudioManager.stopAudio();
     await this.pauseBtn.click();
     await this.stopBtn.click();
     return transcriptFile
   }
-  async CDSS_Transcript_SOAPNote_Conformation() {
+  async CDSS_verification() {
     if (await this.notEnoughTranscript.isDisplayed()) {
       console.error(
         "Recording failed: Please provide a proper medical conversation"
@@ -1110,13 +1439,19 @@ class SpanishLanguage {
       );
     }
     await driver.pause(3000);
+  }
+  async Transcript_Verification(){
     await verifyAndClick(this.Transcript);
     await RecordingPage.dataScanning(RecordingPage.cleanedTranscriptScroll); 
     // await AudioManager.TextComparison()
     await verifyAndClick(this.originalTrnscript);
     await verifyAndClick(this.claeanedTranscript);
+}
+  async SOAPNOTE_Verification(){
     await this.SoapNoteBtn.click();
-  }
+    await this.copyMailPrint();
+    }
+  
 
   async recordAudioAndSaveAsDraft() {
     await AudioManager.playAudio("spanish");
@@ -1141,8 +1476,9 @@ class SpanishLanguage {
     await waitForElement(this.SoapNoteBtn);
     await this.finaliseEncounter.click();
     await this.finaliseEncounterOk.click();
-    // await verify(this.finaliseEncounteSuccessrTxt);
+    await verify(this.finaliseEncounteSuccessrTxt);
     await driver.pause(5000);
+    await LoginPage.restartApp()
   }
 
   async multiple_Conversation() {
@@ -1161,7 +1497,7 @@ class SpanishLanguage {
     await waitForElement(this.finaliseEncounter);
     await verifyAndClick(this.finaliseEncounter);
     await driver.pause(3000);
-    //await verifyAndClick(this.ok)
+    await verifyAndClick(this.ok)
     await verifyAndClick(this.resumeConversationForMultipleConverstionScenario);
     await verifyAndClick(
       this.resumeConversationForMultipleConverstionScenarioYes
@@ -1281,5 +1617,64 @@ class SpanishLanguage {
       console.log(`Offline Mode Loop we are Running Now  ${i + 1} completed`);
     }
   }
+  async bloodGroup(text) {
+    return await waitForElement(
+      $(`//XCUIElementTypeStaticText[@name="main label" and @label="${text} : "]`)
+    );
+  }
+  
+  async bloodName(name) {
+    return await waitForElement($(`~${name}`));
+  }
+  
+  async UpdatePatientInfo() {
+    await waitForElement(this.update)
+    await this.update.click();
+    await this.AddPatientInformation.click();
+  
+    await verifyAndClick(this.title);
+    const blood = "Blood Group";
+    await this.title.setValue(blood);
+  
+    await verifyAndClick(this.Discription);
+    const type = "O positivoe";
+    await this.Discription.setValue(type);
+  
+    await verifyAndClick(this.add);
+    await verifyAndClick(this.clearPatientInfo);
+    await verifyAndClick(this.save);
+  
+    await this.bloodGroup(blood);
+    await this.bloodName(type);
+  
+    await verifyAndClick(this.update);
+    await verifyAndClick(this.cancel);
+  }
+  
+  async manualUpdate() {
+    await waitForElement(this.SoapNoteScreenTxtField)
+    await verifyAndClick(this.SoapNoteScreenTxtField);
+    await this.SoapNoteScreenTxtField.setValue("Grupo sanguíneo O positivo”");
+  
+    await this.bloodGroup("Grupo sanguíneo");
+    await this.bloodName("O positivoe");
+  }
+async hayNoki(){
+  await waitForElement(this.Mic)
+  await verifyAndClick(this.Mic)
+  await this.playTTS("Grupo sanguíneo O negativo", "Alex", 1.2);
+
+  await verifyAndClick(this.send)
+  await waitForElement(this.ok)
+  await verifyAndClick(this.ok)
+  await this.bloodGroup("Grupo sanguíneo");
+  await this.bloodName("O negativo");
+}
+
+
+
+
+
+
 }
 export default new SpanishLanguage();

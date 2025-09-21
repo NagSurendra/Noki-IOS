@@ -5,6 +5,8 @@ import {
   swipe,
   aeroplaneModeOn,
   aeroplaneModeOff,
+  findLiveTranscript,
+  LiveTranscript,
 } from "/Users/nagasubarayudu/Desktop/IOS/helpers/helper.js";
 import LoginPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/login.page.js";
 import EncounterPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/encounter.page.js";
@@ -489,14 +491,16 @@ class RecordingPage {
     await verify(this.offlineModeRTranscription);
     await driver.pause(60000);
     await aeroplaneModeOff();
-    await driver.pause(60000);
+    await driver.pause(10000);
+    await LiveTranscript();
+    await driver.pause(50000);
     await AudioManeger.stopAudio();
   }
   async recordAudio() {
     await this.Audio();
     await this.stopBtn.click();
   }
-  async CDSS_Transcript_SOAPNote_Conformation() {
+  async CDSS_Verification() {
     if (await this.notEnoughTranscript.isDisplayed()) {
       console.error(
         "Recording failed: Please provide a proper medical conversation"
@@ -505,7 +509,7 @@ class RecordingPage {
       await waitForElement(this.SoapNoteBtn);
       console.log("Recording successful: Transcript generated");
     }
-    await waitForElement(QuickActions.quickActionButton)
+    await waitForElement(QuickActions.quickActionButton);
     await verifyAndClick(this.Transcript);
     await verifyAndClick(this.Cdss);
     await driver.pause(2000);
@@ -523,22 +527,28 @@ class RecordingPage {
         "Kindly please verify the CDSS is off / your CDSS subscription is over"
       );
     }
+  }
+  async Transcript_Verification() {
     await driver.pause(3000);
     await verifyAndClick(this.Transcript);
     await this.dataScanning(this.cleanedTranscriptScroll);
     // await AudioManeger.TextComparison()
+    await this.dataScanning();
     await verifyAndClick(this.originalTrnscript);
     await driver.execute("mobile: swipe", { direction: "up" });
     await verifyAndClick(this.claeanedTranscript);
     await driver.execute("mobile: swipe", { direction: "up" });
+  }
+  async SOAPNote_Verification() {
     await this.SoapNoteBtn.click();
-    await driver.execute("mobile: swipe", { direction: "up" });
+    await this.copyMailPrint();
+    await await driver.execute("mobile: swipe", { direction: "up" });
     await driver.execute("mobile: swipe", { direction: "down" });
     await driver.execute("mobile: swipe", { direction: "down" });
   }
 
   async multiple_Conversation() {
-    await waitForElement(this.AddConversation)
+    await waitForElement(this.AddConversation);
     await verifyAndClick(this.AddConversation);
     await verifyAndClick(this.AddConversationNo);
     await verifyAndClick(this.AddConversation);
@@ -560,7 +570,7 @@ class RecordingPage {
     console.log(
       "here we have verified that enounter will not be finalized consisting of draft transcript"
     );
-    //await verifyAndClick(this.ok)
+    await verifyAndClick(this.ok);
     await verifyAndClick(this.resumeConversationForMultipleConverstionScenario);
     await verifyAndClick(
       this.resumeConversationForMultipleConverstionScenarioYes
@@ -570,22 +580,26 @@ class RecordingPage {
     );
     await this.recordAudio();
   }
-  async multiple_Conversations_For_Existing_Patient() {
-    await waitForElement(this.AddConversation)
-      await verifyAndClick(this.AddConversation);
-      await verifyAndClick(this.AddConversationConfirmationYes);
-      await this.recordAudioForExicistingPatient();
-      await this.CDSS_Transcript_SOAPNote_Conformation()
-  
+  async second_conversation_For_Existing_Patient() {
+    await waitForElement(this.AddConversation);
+    await verifyAndClick(this.AddConversation);
+    await verifyAndClick(this.AddConversationConfirmationYes);
+    await this.recordAudioForExicistingPatient();
+    await this.CDSS_Transcript_SOAPNote_Conformation();
   }
-  async multiple_Conversations_For_New_Patient() {
-    await waitForElement(this.AddConversation)
-      await verifyAndClick(this.AddConversation);
-      await verifyAndClick(this.AddConversationConfirmationYes);
-      await this.recordAudio();
+  async second_Conversations_For_New_Patient() {
+    await waitForElement(this.AddConversation);
+    await verifyAndClick(this.AddConversation);
+    await verifyAndClick(this.AddConversationConfirmationYes);
+    await this.recordAudio();
   }
-  async multiple_Conversation_For_Existing_Patient() {
-
+  async third_Conversations_For_New_Patient() {
+    await waitForElement(this.AddConversation);
+    await verifyAndClick(this.AddConversation);
+    await verifyAndClick(this.AddConversationConfirmationYes);
+    await this.recordAudio();
+  }
+  async third_Conversation_For_Existing_Patient() {
     await this.multiple_Conversation();
     await this.PrevEncounterRef.click();
     await this.PrevEncounterRefNo.click();
@@ -598,6 +612,7 @@ class RecordingPage {
     await this.finaliseEncounter.click();
     await this.finaliseEncounterOk.click();
     await driver.pause(20000);
+    await LoginPage.restartApp()
   }
   async recordAudioAndSaveAsDraft() {
     await AudioManeger.playAudio("english");
@@ -636,7 +651,7 @@ class RecordingPage {
   async copyMailPrint() {
     await verifyAndClick(this.copyBtn);
     await verifyAndClick(this.mailBtn);
-    // await verifyAndClick(this.emailSentOk);
+    await verifyAndClick(this.emailSentOk);
     await verifyAndClick(this.printBtn);
     await verify(this.printDownload);
     await driver.pause(10000);
@@ -654,10 +669,10 @@ class RecordingPage {
     console.log("Audio paused at:", AudioManeger.pausedTime, "seconds");
     await driver.pause(20000);
     await this.playBtn.click();
-    await AudioManeger.resumeAudio();  //correct
+    await AudioManeger.resumeAudio(); //correct
     console.log("Audio resumed:", AudioManeger.currentAudioFile);
     await driver.pause(60000); //aagain playing audio for 1 min in online
-    await AudioManeger.pauseAudio(); 
+    await AudioManeger.pauseAudio();
     await driver.pause(2000);
 
     await aeroplaneModeOn();
@@ -681,7 +696,7 @@ class RecordingPage {
     );
     await driver.pause(5000);
     await verify(this.offlineConversationSaved);
-    
+
     await driver
       .action("pointer")
       .move({ duration: 0, x: 355, y: 22 })
@@ -698,16 +713,16 @@ class RecordingPage {
       .down({ button: 0 })
       .pause(50)
       .up({ button: 0 })
-      .perform();         // device come to online
+      .perform(); // device come to online
     await driver.pause(5000);
     console.log(
       "here we have verified that the in offline mode when we click stop button it willshould show a popup of offline conversation is saved"
     );
   }
-  async recordAudioforOfflineForExistingPatient(){
-   await this.recordAudioforOfflineMode()
-   await waitForElement(this.PrevEncounterRefNo)
-   await verifyAndClick(this.PrevEncounterRefNo)
+  async recordAudioforOfflineForExistingPatient() {
+    await this.recordAudioforOfflineMode();
+    await waitForElement(this.PrevEncounterRefNo);
+    await verifyAndClick(this.PrevEncounterRefNo);
   }
 
   async recordAudioforOfflineModeMT() {
@@ -719,7 +734,9 @@ class RecordingPage {
       await aeroplaneModeOn();
       await driver.pause(10000);
       await verify(this.offlineModeRTranscription);
-      await driver.pause(60000);
+      await driver.pause(10000);
+      await findLiveTranscript();
+      await driver.pause(10000);
       await aeroplaneModeOff();
       count++;
       console.log(`Offline Mode Loop we are Running Now  ${i + 1} completed`);
@@ -773,6 +790,61 @@ class RecordingPage {
     console.log(`✅ Texts saved to ${outputFile}`);
 
     return outputFile;
+  }
+  async bloodGroup(text) {
+    return await waitForElement(
+      $(
+        `//XCUIElementTypeStaticText[@name="main label" and @label="${text} : "]`
+      )
+    );
+  }
+
+  async bloodName(name) {
+    return await waitForElement($(`~${name}`));
+  }
+
+  async UpdatePatientInfo() {
+    await waitForElement(this.update);
+    await this.update.click();
+    await this.AddPatientInformation.click();
+
+    await verifyAndClick(this.title);
+    const blood = "Blood Group";
+    await this.title.setValue(blood);
+
+    await verifyAndClick(this.Discription);
+    const type = "O positive";
+    await this.Discription.setValue(type);
+
+    await verifyAndClick(this.add);
+    await verifyAndClick(this.clearPatientInfo);
+    await verifyAndClick(this.save);
+
+    await this.bloodGroup(blood);
+    await this.bloodName(type);
+
+    await verifyAndClick(this.update);
+    await verifyAndClick(this.cancel);
+  }
+
+  async manualUpdate() {
+    await waitForElement(this.SoapNoteScreenTxtField);
+    await verifyAndClick(this.SoapNoteScreenTxtField);
+    await this.SoapNoteScreenTxtField.setValue("Blood Group O positive");
+
+    await this.bloodGroup("Blood Group");
+    await this.bloodName("O positive");
+  }
+  async hayNoki() {
+    await waitForElement(this.Mic);
+    await verifyAndClick(this.Mic);
+    await this.playTTS("Blood group is O negative", "Alex", 1.2);
+
+    await verifyAndClick(this.send);
+    await waitForElement(this.ok);
+    await verifyAndClick(this.ok);
+    await this.bloodGroup("Blood Group");
+    await this.bloodName("O negative");
   }
 }
 

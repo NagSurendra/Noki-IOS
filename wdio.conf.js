@@ -1,10 +1,10 @@
-import path from "path";
 import video from "wdio-video-reporter";
 import { EventEmitter } from "events";
 import fsExtra from "fs-extra"; // Import the default export
 import allure from "allure-commandline"; // Import allure-commandline
 const { removeSync } = fsExtra; // Destructure removeSync
 import { exec } from "child_process";
+import allureReporter from "@wdio/allure-reporter";
 import fs from "fs";
 
 EventEmitter.defaultMaxListeners = 50;
@@ -36,16 +36,28 @@ export const config = {
   // of the config file unless it's absolute.
   //
   specs: [
-    //"./test/spec/login.spec.js",
+  './test/spec/Forgot_Password.spec.js',
+     //'./test/spec/login.spec.js',
     //'./test/spec/home.spec.js',
+    //'./test/spec/setting.spec.js',
+     //'./test/spec/existing_patient.spec.js',
+    // './test/spec/new_patient.spec.js',
+
+    // './test/spec/forgot_Password_ES.spec.js',
+    // './test/spec/Login_Es.spec.js',
+    // './test/spec/setting_Page_ES.spec.js',
+    // './test/spec/existing_Patient_ES.spec.js',
+    // './test/spec/new_Patient_ES.spec.js',
+  
+    //'./test/spec/login.spec.js',
+    
     //'./test/spec/patient.spec.js',
     //'./test/spec/encounter.spec.js',
-
-    //'./test/spec/setting.spec.js',
     // './test/spec/recording.spec.js',
-    //'./test/spec/spanish.spec.js'
-    "./test/spec/sanityTest.spec.js"
-    // './test/spec/.spec.js'
+
+    
+    //"./test/spec/sanityTest.spec.js"
+    //"./test/spec/.spec.js",s
   ],
   // Patterns to exclude.
   exclude: [
@@ -67,7 +79,7 @@ export const config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 40,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -94,7 +106,7 @@ export const config = {
       "appium:newCommandTimeout": 240000,
       "appium:connectionTimeout": 180000,
       "appium:sessionOverride": true,
-      "appium:autoAcceptAlerts": true,
+      // "appium:autoAcceptAlerts": true,
       //"forceAppLaunch":true,
       //"bundleId": "com.thinkhat.devNoki",
       "appium:udid": "00008140-00054922012B001C", //Iphone 16

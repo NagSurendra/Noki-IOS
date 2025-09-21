@@ -106,7 +106,7 @@ class QuickActions {
     { 
         return $('//XCUIElementTypeButton[@name="No"]'); 
     }
-    get ok() 
+     get ok() 
     { 
         return $('~OK'); 
     }
@@ -138,27 +138,115 @@ class QuickActions {
     { 
         return $('//XCUIElementTypeStaticText[@name="No"]'); 
     }
-    async quickAction(){
+        async SOAPNote(){
+
         await waitForElement(RecordingPage.SoapNoteBtn)
         await this.quickActionButton.click()
         await verify(this.quicktionsSearchField)
         await verifyAndClick(this.regenerateSoapNote)
         await verifyAndClick(this.yes)
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
         await waitForElement(RecordingPage.SoapNoteBtn)
         await RecordingPage.copyMailPrint()
-        await RecordingPage.update.click()
-        await RecordingPage.AddPatientInformation.click()
-        await verify(RecordingPage.title)
-        await verify(RecordingPage.Discription)
-        await verifyAndClick(RecordingPage.add)
-        // await verifyAndClick(RecordingPage.ok)
-        await verifyAndClick(RecordingPage.clearPatientInfo)
-        await verifyAndClick(RecordingPage.save)
-        await verifyAndClick(RecordingPage.update)
-        await verifyAndClick(RecordingPage.cancel)
+        }
+        async translateSoapNote(){
+            await waitForElement(RecordingPage.quickActionButton)
+
+        await this.quickActionButton.click()
+        await this.translateSoapNote.click()
+        await this.spanish.click()
+        await verifyAndClick(this.yes)
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.PatientInformationInSpnish)
+        await RecordingPage.copyMailPrint()
+        
         // await driver.execute('mobile: swipe', { direction: 'up' });
+                // await driver.execute('mobile: swipe', { direction: 'down' });
+//                 await driver.execute('mobile: swipe', { direction: 'down' });
+   
+        await this.quickActionButton.click()
+        await this.translateSoapNote.click()
+        await this.english.click()
+        await verifyAndClick(this.yes)
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.PatientInformation)
+        }
+        // await driver.execute('mobile: swipe', { direction: 'up' });                  //icd and cpt codes
+                // await driver.execute('mobile: swipe', { direction: 'down' });
+        // await driver.execute('mobile: swipe', { direction: 'up' });
+                // await driver.execute('mobile: swipe', { direction: 'down' });
+                async ICD_CPT(){
+        await waitForElement(RecordingPage.quickActionButton)
+        await verifyAndClick(this.quickActionButton)
+        await verifyAndClick(this.generateIcdAndCptCodes)
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.icdAndCptCodes)
+        await RecordingPage.copyMailPrint()
+        await verifyAndClick(this.quickActionButton)
+        await verifyAndClick(this.regenerateIcdAndCpt)
+        await verifyAndClick(this.yes)
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.icdAndCptCodes)
+        await RecordingPage.copyMailPrint()
+         }
+    async care_Plan(){
+        await this.quickActionButton.click()
+        await this.generateCarePlan.click()
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.carePlan)
+        await RecordingPage.copyMailPrint()
+        await verifyAndClick(this.quickActionButton)
+        await verifyAndClick(this.regenerateCarePlan)
+        await verifyAndClick(this.yes)
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.carePlan)
+        await RecordingPage.copyMailPrint()
+    }
+    async feed_back(){
+        await this.quickActionButton.click()
+        await this.generateFeedBack.click()
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.feedBack)
+        await RecordingPage.copyMailPrint()
+        await verifyAndClick(this.quickActionButton)
+        await verifyAndClick(this.regenerateFeedBack)
+        await verifyAndClick(this.yes)
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.feedBack)
+        await RecordingPage.copyMailPrint()
+    }
+    async referalLetter(){
+        await this.quickActionButton.click()
+        await this.generateReferalLetter.click()
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.referalLetter)
+        await RecordingPage.copyMailPrint()
+        await this.quickActionButton.click()
+        await verifyAndClick(this.regenerateReferalLetter)
+        await verifyAndClick(this.yes)
+        await waitForElement(this.ok)
+        await verifyAndClick(this.ok)
+        await waitForElement(this.referalLetter)
+       await RecordingPage.copyMailPrint()
+    }
+   
+        
+}
+
+    export default new QuickActions();
+
+
+ // await driver.execute('mobile: swipe', { direction: 'up' });
         // await driver.execute('mobile: swipe', { direction: 'down' });
         // await driver.execute('mobile: swipe', { direction: 'down' });
 
@@ -171,121 +259,3 @@ class QuickActions {
         // await RecordingPage.copyMailPrint()
         // await driver.execute('mobile: swipe', { direction: 'up' });
 
-
-        await this.quickActionButton.click()
-        await this.translateSoapNote.click()
-        await this.spanish.click()
-        await verifyAndClick(this.yes)
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
-        await waitForElement(this.PatientInformationInSpnish)
-        await RecordingPage.copyMailPrint()
-        await RecordingPage.update.click()
-        await RecordingPage.AddPatientInformationInSpanish.click()
-        //await verify(RecordingPage.titleInSpanish)
-        //await verify(RecordingPage.discriptionInSpanish)
-        await verifyAndClick(RecordingPage.add)
-        // await verifyAndClick(RecordingPage.ok)
-        await verifyAndClick(RecordingPage.clearPatientInfo)
-        await verifyAndClick(RecordingPage.save)
-        await verifyAndClick(RecordingPage.update)
-        // await verifyAndClick(RecordingPage.cancel)
-        // await driver.execute('mobile: swipe', { direction: 'up' });
-        //         await driver.execute('mobile: swipe', { direction: 'down' });
-        //         await driver.execute('mobile: swipe', { direction: 'down' });
-        await this.quickActionButton.click()
-        await this.translateSoapNote.click()
-        await this.english.click()
-        await verifyAndClick(this.yes)
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
-        await waitForElement(this.PatientInformation)
-        // await driver.execute('mobile: swipe', { direction: 'up' });                  //icd and cpt codes
-        //         await driver.execute('mobile: swipe', { direction: 'down' });
-        // await driver.pause(4000)
-        // await driver.execute('mobile: swipe', { direction: 'up' });
-        //         await driver.execute('mobile: swipe', { direction: 'down' });
-        // await verifyAndClick(this.quickActionButton)
-        // await verifyAndClick(this.generateIcdAndCptCodes)
-        // // await waitForElement(this.ok)
-        // // await verifyAndClick(this.ok)
-        // await waitForElement(this.icdAndCptCodes)
-        // await RecordingPage.copyMailPrint()
-        // await RecordingPage.update.click()
-        // await this.save.click()
-        await this.quickActionButton.click()
-        await this.generateCarePlan.click()
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
-        await waitForElement(this.carePlan)
-        await RecordingPage.copyMailPrint()
-        // await driver.execute('mobile: swipe', { direction: 'up' });
-        // await driver.execute('mobile: swipe', { direction: 'down' });
-        await this.quickActionButton.click()
-        await this.generateFeedBack.click()
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
-        await waitForElement(this.feedBack)
-        await RecordingPage.copyMailPrint()
-        await driver.execute('mobile: swipe', { direction: 'up' });
-                await driver.execute('mobile: swipe', { direction: 'down' });
-        await this.quickActionButton.click()
-        await this.generateReferalLetter.click()
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
-        await waitForElement(this.referalLetter)
-        await RecordingPage.copyMailPrint()
-        // await driver.execute('mobile: swipe', { direction: 'up' });               //regenerate icd and cpt
-        //         await driver.execute('mobile: swipe', { direction: 'down' });
-        // await verifyAndClick(this.quickActionButton)
-        // await verifyAndClick(this.regenerateIcdAndCpt)
-        // await verifyAndClick(this.yes)
-        // // await waitForElement(this.ok)
-        // // await verifyAndClick(this.ok)
-        // await waitForElement(this.icdAndCptCodes)
-        // await RecordingPage.copyMailPrint()
-        // await driver.execute('mobile: swipe', { direction: 'up' });
-        //         await driver.execute('mobile: swipe', { direction: 'down' });
-        await verifyAndClick(this.quickActionButton)
-        await verifyAndClick(this.regenerateCarePlan)
-        await verifyAndClick(this.yes)
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
-        await waitForElement(this.carePlan)
-        await RecordingPage.copyMailPrint()
-        await driver.execute('mobile: swipe', { direction: 'up' });
-                await driver.execute('mobile: swipe', { direction: 'down' });
-        await verifyAndClick(this.quickActionButton)
-        await verifyAndClick(this.regenerateFeedBack)
-        await verifyAndClick(this.yes)
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
-        await waitForElement(this.feedBack)
-        await RecordingPage.copyMailPrint()
-        await driver.execute('mobile: swipe', { direction: 'up' });
-        await driver.execute('mobile: swipe', { direction: 'down' });
-        await this.quickActionButton.click()
-        await verifyAndClick(this.regenerateReferalLetter)
-        await verifyAndClick(this.yes)
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
-        await waitForElement(this.referalLetter)
-        await verifyAndClick(RecordingPage.copyBtn)
-        await verifyAndClick(RecordingPage.mailBtn);
-        // await verifyAndClick(RecordingPage.emailSentOk)
-        await verifyAndClick(RecordingPage.printBtn)
-        await verifyAndClick(RecordingPage.printPageCancel);
-        await verifyAndClick(RecordingPage.printPageBackBtn);
-        await driver.execute('mobile: swipe', { direction: 'up' });
-        await driver.execute('mobile: swipe', { direction: 'down' });
-        await this.quickActionButton.click()
-        await verifyAndClick(this.regenerateSoapNote)
-        await verifyAndClick(this.yes)
-        // await waitForElement(this.ok)
-        // await verifyAndClick(this.ok)
-        
-}
-
-    
-}
-    export default new QuickActions();

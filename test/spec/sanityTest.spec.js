@@ -63,7 +63,7 @@ it("Initiate conversations with existing patient", async () => {
 it("Record the  first conversation for Exiciting patient and verifying all the Offline Scenarios ", async () => {
   await RecordingPage.startConversation();
   await RecordingPage.recordAudioforOfflineForExistingPatient()
-});
+}); 
 
 it("CDSS  Transcript  SOAP Note - verification for an exiciting patient for First Conversation", async () => {
   await RecordingPage.CDSS_Transcript_SOAPNote_Conformation();

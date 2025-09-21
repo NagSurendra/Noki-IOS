@@ -96,7 +96,7 @@ class AddPatientPage {
         await this.male.click()
         await verify(this.cancel)
         await verifyAndClick(this.addAndProceed)
-        // await RecordingPage.patientCreatedOk.click()
+        await RecordingPage.patientCreatedOk.click()
         return name
     }
     async addPatientWrn() 

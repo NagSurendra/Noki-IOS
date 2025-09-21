@@ -4,22 +4,23 @@ import { verify, verifyAndClick } from '/Users/nagasubarayudu/Desktop/IOS/helper
 import SettingsPage from '/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/setting.page.js';
 import adapterFactory from '@wdio/mocha-framework';
 import allureReporter from "@wdio/allure-reporter";
+import SpanishLanguage from '../screenObjectModel/spanishLanguage';
 
 describe('Setting screen elments and functinality check {TC19}',() => {
     beforeEach(() => {
         allureReporter.addEpic("NOKI IOS Automation");
-        allureReporter.addFeature("Settings Screen all scenarios ");
+        allureReporter.addFeature("Settings screen -Es");
         allureReporter.addOwner('Mobile Team');
       });
     it.skip('Verify Settings screen Profille Edit ', async() => {
-        await SettingsPage.profileSettingScreen()
+        await SpanishLanguage.profileSettingScreen()
     });
     it('Verify Settings screen Profille Edit ', async() => {
-        await SettingsPage.support_VerifiCation()
+        await SpanishLanguage.support_VerifiCation()
     });
     
     it('Verify Settings screen launguage and general settings', async() => {
-        await SettingsPage.launguageAndGeneralSettings()
+        await SpanishLanguage.launguageAndGeneralSettings()
     });
     
 
