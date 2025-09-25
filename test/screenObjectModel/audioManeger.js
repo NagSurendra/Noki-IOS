@@ -10,7 +10,7 @@ class AudioManager {
   constructor() {
     this.audioFiles = {
       english: "/Users/nagasubarayudu/Desktop/IOS/utils/audioFiles/CardiacArrest.wav",
-      spanish: "/Users/nagasubarayudu/Desktop/IOS/utils/audioFiles/CardiacArrestEs.wav",
+      spanish: "/Users/nagasubarayudu/Desktop/IOS/utils/audioFiles/CardiacArrest.mp3",
     };
     this.currentAudioFile = null;
     this.currentProcess = null;

@@ -6,7 +6,7 @@ import adapterFactory from '@wdio/mocha-framework';
 import allureReporter from "@wdio/allure-reporter";
 import SpanishLanguage from '../screenObjectModel/spanishLanguage';
 
-describe('Setting screen elments and functinality check {TC19}',() => {
+describe('Setting screen elments and functinalily verification -Spanish',() => {
     beforeEach(() => {
         allureReporter.addEpic("NOKI IOS Automation");
         allureReporter.addFeature("Settings screen -Es");
@@ -16,11 +16,15 @@ describe('Setting screen elments and functinality check {TC19}',() => {
         await SpanishLanguage.profileSettingScreen()
     });
     it('Verify Settings screen Profille Edit ', async() => {
+        await LoginPage.restartApp()
         await SpanishLanguage.support_VerifiCation()
+
     });
     
     it('Verify Settings screen launguage and general settings', async() => {
+        await LoginPage.restartApp()
         await SpanishLanguage.launguageAndGeneralSettings()
+        await LoginPage.restartApp()
     });
     
 

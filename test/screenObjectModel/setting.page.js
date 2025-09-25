@@ -1,4 +1,4 @@
-import {
+ import {
   verifyAndClick,
   verify,
 } from "/Users/nagasubarayudu/Desktop/IOS/helpers/helper.js";
@@ -22,13 +22,13 @@ class SettingsPage {
   get help() {
     return $("~support");
   }
-  get whatsapp() {
-    return $("~whatsapp");
+  get phone() {
+    return $("~phone");
   }
   get text() {
     return $("~text");
   }
-  get whatsappText() {
+  get phoneText() {
     return $("~text");
   }
   get messagetext() {
@@ -51,7 +51,7 @@ class SettingsPage {
     return $("~Idioma");
   }
   get generalSettings() {
-    return $("~generalsettings");
+    return $("~General Settings");
   }
   get generalSettingsShowUp() {
     return $("~chevron.down");
@@ -130,7 +130,7 @@ class SettingsPage {
   }
 
   get selectAllOn() {
-    return $("selectallbuttonoff");
+    return $("~selectallbuttonoff");
   }
 
   get selectAllOff() {
@@ -210,6 +210,7 @@ class SettingsPage {
   }
 
   async profileSettingScreen() {
+    await verifyAndClick(this.profileSettings)
     await verifyAndClick(this.edit);
     await verifyAndClick(this.firstName);
     await this.firstName.clearValue();
@@ -260,27 +261,27 @@ class SettingsPage {
  
   async support_VerifiCation() {
    
-    await verifyAndClick(this.help);
-    await verifyAndClick(this.whatsapp);
+    // await verifyAndClick(this.help);
+    // await verifyAndClick(this.phone);
 
-    const whatsappBundleId = "net.whatsapp.WhatsApp"; // WhatsApp's bundle ID for iOS
+    // const phoneBundleId = "com.apple.Numbers"; // phone's bundle ID for iOS
 
-    // Check if WhatsApp is in the foreground (state 4 indicates the app is active)
-    const appState = await driver.execute("mobile: queryAppState", {
-      bundleId: whatsappBundleId,
-    });
-    if (appState !== 4) {
-      throw new Error(
-        `WhatsApp (${whatsappBundleId}) is not active. Current app state: ${appState}`
-      );
-    }
+    // // Check if phone is in the foreground (state 4 indicates the app is active)
+    // const appState = await driver.execute("mobile: queryAppState", {
+    //   bundleId: phoneBundleId,
+    // });
+    // if (appState !== 4) {
+    //   throw new Error(
+    //     `phone (${phoneBundleId}) is not active. Current app state: ${appState}`
+    //   );
+    // }
 
-    console.log("WhatsApp is active");
+    // console.log("phone is active");
 
-    // Pause for 5 seconds
-    await driver.pause(5000);
+    // // Pause for 5 seconds
+    // await driver.pause(5000);
     // Switch back to the original app
-    await driver.activateApp("com.thinkhat.nokiTest");
+    // await driver.activateApp("com.thinkhat.nokiTest");
     await HomePage.settings.click();
     await verifyAndClick(this.help);
     await verifyAndClick(this.email);
@@ -295,7 +296,6 @@ class SettingsPage {
       );
     }
     console.log("Gmail is active");
-    await driver.pause(5000);
     await driver.activateApp("com.thinkhat.nokiTest");
     // Open Settings and Help, then click text element to launch Messages
     await HomePage.settings.click();
@@ -313,26 +313,24 @@ class SettingsPage {
     }
     console.log("Messages is active");
     // Pause for 5 seconds and switch back
-    await driver.pause(5000);
     await driver.activateApp("com.thinkhat.nokiTest");
   }
   async launguageAndGeneralSettings(){
     await verifyAndClick(this.launguage)
-    await verifyAndClick(this.english)
-    await verify(this.spanish)
-    await verifyAndClick(this.launguage)
     await verifyAndClick(this.spanish)
-
+    await verify(this.Idioma)
+    await verifyAndClick(this.launguage)
+    await verifyAndClick(this.english)
     await verifyAndClick(this.generalSettings)
-    await verifyAndClick(this.selectAllOn)
+    await verifyAndClick(this.selectAllOff)
     await verifyAndClick(this.Done)
     await verifyAndClick(this.generalSettings)
     await verify(this.cdssDisabled)
     await verify(this.diognosisJustificationDisabled)
-    await verifyAndClick(this.selectAllOff)
+    await verifyAndClick(this.selectAllOn)
     await verifyAndClick(this.Done)
     await verifyAndClick(this.generalSettings)
-    await verify(this.selectAllOn)
+    await verify(this.selectAllOff)
     await verify(this.cdss)
     await verify(this.diognosisJustification)
     await verifyAndClick(this.Done)

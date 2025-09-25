@@ -48,8 +48,8 @@ class LoginPage {
     }
 
     async restartApp() {
-        await driver.terminateApp('com.thinkhat.nokiTest');
-        await driver.activateApp('com.thinkhat.nokiTest');
+        await driver.terminateApp('com.thinkhat.noki');
+        await driver.activateApp('com.thinkhat.noki');
     }
     async selectMultiTenant() {
        await this.multitenantDropDown.click();

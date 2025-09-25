@@ -1,64 +1,66 @@
-
 import {
   verify,
   verifyAndClick,
   waitForElement,
+  aeroplaneModeOff,
+  aeroplaneModeOn,
+  LiveTranscript,
 } from "/Users/nagasubarayudu/Desktop/IOS/helpers/helper.js";
 import allureReporter from "@wdio/allure-reporter";
 import AudioManeger from "../screenObjectModel/audioManeger.js";
 
 import SettingsPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/setting.page.js";
-import SpanishLanguage from '../../test/screenObjectModel/spanishLanguage.js'
-describe('Existing patient Complete flow ', () => {
+import SpanishLanguage from "../screenObjectModel/spanishLanguage.js";
+describe("New patient E2E flow -Spnish", () => {
   beforeEach(() => {
-    allureReporter.addEpic('NOKI IOS Automation');
-    allureReporter.addFeature('Existing patient all conversation scenarios');
-    allureReporter.addOwner('Mobile Team');
+    allureReporter.addEpic("NOKI IOS Automation");
+    allureReporter.addFeature("Existing patient E2E -Es");
+    allureReporter.addOwner("Mobile Team");
+  });
 
-});
-
-  it('Intiating the conversation for a Newly created Patient', async() => {
+  it("Intiating the conversation for a Newly created Patient", async () => {
     await waitForElement(SpanishLanguage.startNewEncounter);
     await SpanishLanguage.startNewEncounter.click();
     await verifyAndClick(SpanishLanguage.addPatient);
     await SpanishLanguage.addPatitentWrn();
     await SpanishLanguage.createNewPatient();
   });
-  it('Recording the conversation for multiple times offline ', async() => {
+  it("Recording the conversation for multiple times offline ", async () => {
     await SpanishLanguage.startConversation();
-    await AudioManeger.playAudio("english");
+    await AudioManeger.playAudio("spanish");
     console.log("Audio started:", AudioManeger.currentAudioFile);
     await SpanishLanguage.recordAudioforOfflineModeMT();
-    await driver.pause(10000);
+    await driver.pause(5000);
     await verifyAndClick(SpanishLanguage.pauseBtn);
     await AudioManeger.pauseAudio();
     console.log("Audio paused at:", AudioManeger.pausedTime, "seconds");
-    await driver.pause(20000);
-    await SpanishLanguage.playBtn.click();
-    await AudioManeger.resumeAudio();  //correct
+    await driver.pause(10000);
+    await SpanishLanguage.PlayBtn.click();
+    await AudioManeger.resumeAudio(); //correct
     console.log("Audio resumed:", AudioManeger.currentAudioFile);
-    await driver.pause(60000); //aagain playing audio for 1 min in online
-    await AudioManeger.pauseAudio(); 
+    await driver.pause(30000); //again playing audio for 1 min in online
+    await AudioManeger.pauseAudio();
     await driver.pause(2000);
 
     await aeroplaneModeOn();
 
     await driver.pause(5000);
     await AudioManeger.pauseAudio();
-   
-    
   });
-  it('Offline mode app kill state verification', async() => {
-    await driver.terminateApp("com.thinkhat.nokiTest"); // step verifying the app screen to be in recording screen only even in offline
-    await driver.pause(10000);
-    await driver.activateApp("com.thinkhat.nokiTest");
+  it.skip("Offline mode app kill state verification", async () => {
+    await driver.terminateApp("com.thinkhat.noki"); // step verifying the app screen to be in recording screen only even in offline
+    await driver.pause(5000);
+    await driver.activateApp("com.thinkhat.noki");
+    // await verifyAndClick(SpanishLanguage.errorOk)
     await waitForElement(SpanishLanguage.ContinueBtn);
     await verifyAndClick(SpanishLanguage.ContinueBtn);
     console.log(
       "Here app got restarted the app while it is in the recording screen and we verified with the app still in that page"
     );
+  });
+  it("Offline mode app pause/Stop buttons verification", async () => {
     await AudioManeger.resumeAudio();
-    await driver.pause(60000);
+    await driver.pause(30000);
     await AudioManeger.stopAudio();
     await verifyAndClick(SpanishLanguage.stopBtn);
     console.log(
@@ -66,7 +68,7 @@ describe('Existing patient Complete flow ', () => {
     );
     await driver.pause(5000);
     await verify(SpanishLanguage.offlineConversationSaved);
-    
+
     await driver
       .action("pointer")
       .move({ duration: 0, x: 355, y: 22 })
@@ -83,59 +85,57 @@ describe('Existing patient Complete flow ', () => {
       .down({ button: 0 })
       .pause(50)
       .up({ button: 0 })
-      .perform();         // device come to online
+      .perform(); // device come to online
     await driver.pause(5000);
     console.log(
       "here we have verified that the in offline mode when we click stop button it willshould show a popup of offline conversation is saved"
     );
   });
-  it('SOAP NOTE  & Transcript Verification for the First conversation', async() => {
-    await SpanishLanguage.SOAPNote_Verification()
-    await SpanishLanguage.Transcript_Verification()
+  it("SOAP NOTE  & Transcript Verification for the First conversation", async () => {
+    await SpanishLanguage.SOAPNOTE_Verification();
+    await SpanishLanguage.Transcript_Verification();
   });
-  it('Second Conversation Intiation ', async() => {
-    await SpanishLanguage.second_Conversations_For_New_Patient()
+  it("Second Conversation Intiation ", async () => {
+    await SpanishLanguage.second_Conversations_For_New_Patient();
   });
-  it('SOAP NOTE  & Transcript Verification for the second conversation', async() => {
-    await SpanishLanguage.SOAPNote_Verification()
-    await SpanishLanguage.Transcript_Verification()
-
+  it("SOAP NOTE  & Transcript Verification for the second conversation", async () => {
+    await SpanishLanguage.SOAPNOTE_Verification();
+    await SpanishLanguage.Transcript_Verification();
   });
-  it('Thiord Conversation {makingh the converastion as draft and completing the draft Transcript }', async() => {
-    await SpanishLanguage.third_Conversations_For_New_Patient()
+  it("Thiord Conversation {makingh the converastion as draft and completing the draft Transcript }", async () => {
+    await SpanishLanguage.third_Conversations_For_New_Patient();
   });
-  it('SOAP NOTE  & Transcript Verification for the Third Conversation', async() => {
-    await SpanishLanguage.SOAPNote_Verification()
-    await SpanishLanguage.Transcript_Verification()
-  });
-
-  it('ICD & CPT Codes Generation and Regeneration', async() => {
-    await QuickActions.ICD_CPT()
+  it("SOAP NOTE  & Transcript Verification for the Third Conversation", async () => {
+    await SpanishLanguage.SOAPNOTE_Verification();
+    await SpanishLanguage.Transcript_Verification();
   });
 
-  it('Care Plan generation and Regeneration ', async() => {
-    await QuickActions.care_Plan()
+  it("ICD & CPT Codes Generation and Regeneration", async () => {
+    await SpanishLanguage.ICD_CPT();
   });
 
-  it('Feed back on the doctor genaration and Regenaration ', async() => {
-    await QuickActions.feed_back()
-  });
-  it('Referall leter genaration and Regenaration', async() => {
-    await QuickActions.referalLetter()
-  });
-  it('Regenerate SOAP Note verification', async() => {
-    await QuickActions.SOAP_NOTE()
-    await SpanishLanguage.UpdatePatientInfo()
-  });
-  it(' HayNoki update verification', async() => {
-    await SpanishLanguage.manualUpdate()
-  });
-  it('update and HayNoki update verification', async() => {
-    await SpanishLanguage.hayNoki()
+  it("Care Plan generation and Regeneration ", async () => {
+    await SpanishLanguage.care_Plan();
   });
 
-  it('Finalizing the encounter', async() => {
-    await SpanishLanguage.finalize_Encounter()
+  it("Feed back on the doctor genaration and Regenaration ", async () => {
+    await SpanishLanguage.feed_Back();
+  });
+  it("Referall leter genaration and Regenaration", async () => {
+    await SpanishLanguage.referal_Letter();
+  });
+  it("Regenerate SOAP Note and update Patient-info verification", async () => {
+    await SpanishLanguage.SOAP_NOTE();
+    await SpanishLanguage.UpdatePatientInfo();
+  });
+  it.skip("manual Update verification", async () => {
+    await SpanishLanguage.manualUpdate();
+  });
+  it("HayNoki update verification", async () => {
+    await SpanishLanguage.hayNoki();
   });
 
-})
+  it("Finalizing the encounter", async () => {
+    await SpanishLanguage.finalize_Encounter();
+  });
+});

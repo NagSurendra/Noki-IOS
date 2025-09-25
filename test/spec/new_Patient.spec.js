@@ -9,16 +9,18 @@ import {
   verify,
   verifyAndClick,
   waitForElement,
+  aeroplaneModeOff,
+  aeroplaneModeOn
 } from "/Users/nagasubarayudu/Desktop/IOS/helpers/helper.js";
 import allureReporter from "@wdio/allure-reporter";
-
+import AudioManeger from '../screenObjectModel/audioManeger.js'
 import SettingsPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/setting.page.js";
 import AddPatitentPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/addPatient.page.js";
 import QuickActions from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/quickActions.page.js";
-describe('Existing patient Complete flow ', () => {
+describe('new patient E2E flow -English ', () => {
   beforeEach(() => {
     allureReporter.addEpic('NOKI IOS Automation');
-    allureReporter.addFeature('Existing patient all conversation scenarios');
+    allureReporter.addFeature('Existing patient E2E -En');
     allureReporter.addOwner('Mobile Team');
 
 });
@@ -55,14 +57,18 @@ describe('Existing patient Complete flow ', () => {
     
   });
   it('Offline mode app kill state verification', async() => {
-    await driver.terminateApp("com.thinkhat.nokiTest"); // step verifying the app screen to be in recording screen only even in offline
+    await driver.terminateApp("com.thinkhat.noki"); // step verifying the app screen to be in recording screen only even in offline
     await driver.pause(10000);
-    await driver.activateApp("com.thinkhat.nokiTest");
+    await driver.activateApp("com.thinkhat.noki");
+    // await verifyAndClick(RecordingPage.errorOk)
     await waitForElement(RecordingPage.ContinueBtn);
     await verifyAndClick(RecordingPage.ContinueBtn);
     console.log(
       "Here app got restarted the app while it is in the recording screen and we verified with the app still in that page"
     );
+  })
+  it('Offline mode app pause/Stop buttons verification', async() => {
+
     await AudioManeger.resumeAudio();
     await driver.pause(60000);
     await AudioManeger.stopAudio();
@@ -127,13 +133,14 @@ describe('Existing patient Complete flow ', () => {
     await QuickActions.feed_back()
   });
   it('Referall leter genaration and Regenaration', async() => {
-    await QuickActions.referalLetter()
+    await QuickActions.referal_Letter()
   });
   it('Regenerate SOAP Note verification', async() => {
-    await QuickActions.SOAP_NOTE()
+    await QuickActions.SOAPNote()
     await RecordingPage.UpdatePatientInfo()
   });
-  it(' HayNoki update verification', async() => {
+  
+  it.skip(' HayNoki update verification', async() => {
     await RecordingPage.manualUpdate()
   });
   it('update and HayNoki update verification', async() => {

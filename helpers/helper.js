@@ -7,10 +7,8 @@ import path from "path";
 import player from "play-sound";
 import say from "say";
 
-
 export async function verify(element) {
   await element?.waitForDisplayed({ timeout: 20000 });
-
 }
 
 export async function verifyAndClick(element) {
@@ -228,8 +226,8 @@ export async function aeroplaneModeOff() {
 export async function normalizeText(text) {
   return text
     .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "")  // remove punctuation
-    .replace(/\s+/g, " ")         // collapse multiple spaces
+    .replace(/[^a-z0-9\s]/g, "") // remove punctuation
+    .replace(/\s+/g, " ") // collapse multiple spaces
     .trim();
 }
 
@@ -248,9 +246,9 @@ export async function levenshtein(a, b) {
         matrix[i][j] = matrix[i - 1][j - 1];
       } else {
         matrix[i][j] = Math.min(
-          matrix[i - 1][j] + 1,     // deletion
-          matrix[i][j - 1] + 1,     // insertion
-          matrix[i - 1][j - 1] + 1  // substitution
+          matrix[i - 1][j] + 1, // deletion
+          matrix[i][j - 1] + 1, // insertion
+          matrix[i - 1][j - 1] + 1 // substitution
         );
       }
     }
@@ -259,25 +257,26 @@ export async function levenshtein(a, b) {
   return matrix[a.length][b.length];
 }
 
-
-import allureReporter from '@wdio/allure-reporter';
-
+import allureReporter from "@wdio/allure-reporter";
 
 export async function LiveTranscript() {
   const transcript = await $("//XCUIElementTypeTextView");
   const text = await transcript.getText();
-try{
-  if (text && text.trim().length > 0) {
-    allureReporter.addStep("✅ Live transcript is visible", { text: text.slice(0, 500) }, "passed");
-    return text;
-  } else {
-    allureReporter.addStep("⚠️ Live transcript not found", {}, "broken");
-    return null;
+  try {
+    if (text && text.trim().length > 0) {
+      allureReporter.addStep(
+        "✅ Live transcript is visible",
+        { text: text.slice(0, 500) },
+        "passed"
+      );
+      return text;
+    } else {
+      allureReporter.addStep("⚠️ Live transcript not found", {}, "broken");
+      return null;
+    }
+  } catch {
+    console.error("the live transcript is not visible");
   }
-}
-catch{
-  console.error('the live transcript is not visible')
-}
 }
 export async function playTTS(text, voice = null, speed = 1.0) {
   return new Promise((resolve, reject) => {
@@ -292,5 +291,3 @@ export async function playTTS(text, voice = null, speed = 1.0) {
     });
   });
 }
-
-

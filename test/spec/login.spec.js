@@ -3,25 +3,25 @@ import HomePage from '/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/h
 import { verify, verifyAndClick } from '/Users/nagasubarayudu/Desktop/IOS/helpers/helper.js';
 import allureReporter from "@wdio/allure-reporter";
 
-describe('login screen test cases {TC01 - TC09}',() => { 
+describe('Login screen all senarios in English',() => { 
     beforeEach(() => {
         allureReporter.addEpic("NOKI IOS Automation");
-        allureReporter.addFeature("Login all scenarios ");
+        allureReporter.addFeature("Login all scenarios -En ");
         allureReporter.addOwner('Mobile Team');
       });
     it('Verify error message when password is not provided {TC03}', async() => {
         await LoginPage.restartApp()
-        await LoginPage.enterEmail('nag.subbarayudu@thinkhat.ai')
-        await LoginPage.selectMultiTenant();
+        await LoginPage.enterEmail('bheema.badri@thinkhat.ai')
+        // await LoginPage.selectMultiTenant();
         await LoginPage.clickLogin();
         await verify(LoginPage.errorMessage);
     });
 
     it('Verify error message when an incorrect password is entered {TC04}', async() => {
         await LoginPage.restartApp()
-        await LoginPage.enterEmail('nag.subbarayudu@thinkhat.ai')
+        await LoginPage.enterEmail('bheema.badri@thinkhat.ai')
         await LoginPage.enterPassword('123456')
-        await LoginPage.selectMultiTenant();
+        // await LoginPage.selectMultiTenant();
         await LoginPage.clickLogin();
         await verify(LoginPage.shortPassword);
     });
@@ -48,17 +48,17 @@ describe('login screen test cases {TC01 - TC09}',() => {
   
     it('Verify  message when the password is wrong', async() => {
         await LoginPage.restartApp()
-        await LoginPage.enterEmail('nag.subbarayudu@thinkhat.ai')
-        await LoginPage.enterPassword('Welcome@124dwdfsscawd')
-        await LoginPage.selectMultiTenant();
+        await LoginPage.enterEmail('bheema.badri@thinkhat.ai')
+        await LoginPage.enterPassword('Welcome@124')
+        // await LoginPage.selectMultiTenant();
         await LoginPage.clickLogin();
         await verify(LoginPage.WrongPassword)
     });
        it('Verify  message when the email is multitenent{TC08}', async() => {
-        
-        await LoginPage.enterEmail('nag.subbarayudu@thinkhat.ai')
-        await LoginPage.enterPassword('Welcome@123')
-        await LoginPage.selectMultiTenant();
+        await LoginPage.restartApp()
+        await LoginPage.enterEmail('bheema.badri@thinkhat.ai')
+        await LoginPage.enterPassword('Abcd1234$')
+        // await LoginPage.selectMultiTenant();
         await LoginPage.clickLogin();
         await verify(LoginPage.homescreenAnimation)
     });

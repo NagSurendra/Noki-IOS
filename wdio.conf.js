@@ -1,4 +1,3 @@
-import video from "wdio-video-reporter";
 import { EventEmitter } from "events";
 import fsExtra from "fs-extra"; // Import the default export
 import allure from "allure-commandline"; // Import allure-commandline
@@ -36,28 +35,28 @@ export const config = {
   // of the config file unless it's absolute.
   //
   specs: [
-  './test/spec/Forgot_Password.spec.js',
-     //'./test/spec/login.spec.js',
-    //'./test/spec/home.spec.js',
-    //'./test/spec/setting.spec.js',
-     //'./test/spec/existing_patient.spec.js',
-    // './test/spec/new_patient.spec.js',
+    //  './test/spec/Forgot_Password.spec.js',
+    // './test/spec/Login.spec.js',
+    // './test/spec/home.spec.js',
+    // './test/spec/setting.spec.js',
+    // './test/spec/Existing_Patient.spec.js',
+    //  './test/spec/New_Patient.spec.js',
 
-    // './test/spec/forgot_Password_ES.spec.js',
+    //  './test/spec/Forgot_Password_ES.spec.js',
     // './test/spec/Login_Es.spec.js',
-    // './test/spec/setting_Page_ES.spec.js',
-    // './test/spec/existing_Patient_ES.spec.js',
-    // './test/spec/new_Patient_ES.spec.js',
-  
+    // './test/spec/Settings_ES.spec.js',
+    // './test/spec/Existing_Patient_ES.spec.js',
+    './test/spec/New_Patient_ES.spec.js',
+
     //'./test/spec/login.spec.js',
-    
+
     //'./test/spec/patient.spec.js',
     //'./test/spec/encounter.spec.js',
     // './test/spec/recording.spec.js',
 
-    
     //"./test/spec/sanityTest.spec.js"
-    //"./test/spec/.spec.js",s
+    // "./test/spec/.spec.js",
+    
   ],
   // Patterns to exclude.
   exclude: [
@@ -93,9 +92,9 @@ export const config = {
       //"deviceName": "iPhone 16",
       // "platformVersion": "16.7.8",
       //"deviceName": "iPhone 15 Pro Max",
-      "appium:deviceName": "iPhone 16 Pro Max",
+      "appium:deviceName": "iPhone 16",
       //"deviceName": "iPad (5th generation)",
-      "appium:platformVersion": "18.5",
+      "appium:platformVersion": "18.6.2",
       // "deviceName": "iPhone 12",\
       "appium:automationName": "XCUITest",
       // "wdaLocalPort": 8100,
@@ -154,7 +153,7 @@ export const config = {
   // baseUrl: 'http://localhost:8080',
   //
   // Default timeout for all waitFor* commands.
-  waitforTimeout: 100000,
+  waitforTimeout: 10000,
   //
   // Default timeout in milliseconds for request
   // if browser driver or grid doesn't send response
@@ -243,7 +242,7 @@ export const config = {
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: "bdd",
-    timeout: 12000000,
+    timeout: 1200000,
   },
 
   //
@@ -347,22 +346,13 @@ export const config = {
     context,
     { error, result, duration, passed, retries }
   ) {
-    if (passed || error || result) {
-      // Sanitize test title to create a safe filename
-      const safeTitle = test.title.replace(/[^a-zA-Z0-9-_]/g, "_");
-
-      // Take screenshot as base64
+    if (!passed || error || result) {
       const screenshot = await browser.takeScreenshot();
-
-      // Attach screenshot to Allure report
       allureReporter.addAttachment(
         "Screenshot on Failure",
         Buffer.from(screenshot, "base64"),
         "image/png"
       );
-
-      // Log timing and retry info
-      console.log("Time taken by the test:", duration, "Retries:", retries);
     }
   },
 
@@ -380,24 +370,24 @@ export const config = {
    * @param {object} error error object if any
    */
 
-  onComplete: function (_exitCode, _config, _capabilities, _results) {
-    return new Promise((resolve, reject) => {
-      const generation = allure(["generate", "allure-results", "--clean"]);
-      const generationTimeout = setTimeout(
-        () => reject(new Error("Could not generate Allure report")),
-        10000
-      );
+  // onComplete: function (_exitCode, _config, _capabilities, _results) {
+  //   return new Promise((resolve, reject) => {
+  //     const generation = allure(["generate", "allure-results", "--clean"]);
+  //     const generationTimeout = setTimeout(
+  //       () => reject(new Error("Could not generate Allure report")),
+  //       10000
+  //     );
 
-      generation.on("exit", function (exitCode) {
-        clearTimeout(generationTimeout);
-        if (exitCode !== 0) {
-          return reject(new Error("Could not generate Allure report"));
-        }
-        console.log("Allure report successfully generated");
-        resolve();
-      });
-    });
-  },
+  //     generation.on("exit", function (exitCode) {
+  //       clearTimeout(generationTimeout);
+  //       if (exitCode !== 0) {
+  //         return reject(new Error("Could not generate Allure report"));
+  //       }
+  //       console.log("Allure report successfully generated");
+  //       resolve();
+  //     });
+  //   });
+  // },
 
   /**
    * Gets executed after all tests are done. You still have access to all global variables from
@@ -442,17 +432,17 @@ export const config = {
       else console.log("🌐 Allure report opened in browser");
     });
 
-    const reportPath = "./reports/html-reports/report.html";
-    if (!fs.existsSync(reportPath)) {
-      console.warn("⚠️ No HTML report found, did tests run?");
-    } else {
-      exec(`open ${reportPath}`, (err) => {
-        if (err)
-          console.error("⚠️ Failed to open HTML report automatically:", err);
-        else console.log(`🌐 HTML report opened: ${reportPath}`);
-      });
-    }
+    // const reportPath = "./reports/html-reports/report.html";
+    // if (!fs.existsSync(reportPath)) {
+    //   console.warn("⚠️ No HTML report found, did tests run?");
+    // } else {
+    //   exec(`open ${reportPath}`, (err) => {
+    //     if (err)
+    //       console.error("⚠️ Failed to open HTML report automatically:", err);
+    //     else console.log(`🌐 HTML report opened: ${reportPath}`);
+    //   });
   },
+
   /**
    * Gets executed when a refresh happens.
    * @param {string} oldSessionId session ID of the old session
