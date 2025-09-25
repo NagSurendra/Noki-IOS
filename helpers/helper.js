@@ -170,7 +170,6 @@ export async function swipe(direction, scrollElement) {
   await driver.execute("mobile: swipe", {
     direction,
     duration: 1000,
-    elementId: await element.elementId,
     percent: 0.09,
   });
 }

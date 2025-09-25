@@ -12,16 +12,12 @@ import {
 } from "/Users/nagasubarayudu/Desktop/IOS/helpers/helper.js";
 import allureReporter from "@wdio/allure-reporter";
 import AudioManeger from "../screenObjectModel/audioManeger.js";
-
-import SettingsPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/setting.page.js";
-import AddPatitentPage from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/addPatient.page.js";
 import QuickActions from "/Users/nagasubarayudu/Desktop/IOS/test/screenObjectModel/quickActions.page.js";
 describe('Existing patient Complete flow ', () => {
   beforeEach(() => {
     allureReporter.addEpic('NOKI IOS Automation');
     allureReporter.addFeature('Existing patient all conversation scenarios');
     allureReporter.addOwner('Mobile Team');
-
 });
 
   it('Intiating the conversation for a Existing conversation', async() => {

@@ -1030,7 +1030,6 @@ async launguageAndGeneralSettings(){
   //     return $('~french');
   // }
 
-
   get generateIcdAndCptCodes() {
     return $("~Generar códigos ICD y CPT");
   }
@@ -1631,7 +1630,6 @@ async referal_Letter(){
     await waitForElement(this.update)
     await this.update.click();
     await this.AddPatientInformation.click();
-  
     await verifyAndClick(this.title);
     const blood = "Blood Group";
     await this.title.setValue(blood);
